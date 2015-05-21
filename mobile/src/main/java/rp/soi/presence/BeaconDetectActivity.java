@@ -18,7 +18,7 @@ import org.altbeacon.beacon.Region;
 
 public class BeaconDetectActivity extends Activity implements BeaconConsumer {
 
-    protected static final String TAG ="";
+    protected static final String TAG ="###############";
     BeaconManager beaconManager;
     TextView tvMsg;
 
@@ -62,23 +62,26 @@ public class BeaconDetectActivity extends Activity implements BeaconConsumer {
             @Override
             public void didEnterRegion(Region region) {
                 //tvMsg.setText("I just saw an beacon for the first time!");
-                Toast toast = Toast.makeText(getApplicationContext(),"I just saw an beacon for the first time!" , Toast.LENGTH_SHORT);
-                toast.show();
+                //Toast toast = Toast.makeText(getApplicationContext(),"I just saw an beacon for the first time!" , Toast.LENGTH_SHORT);
+                //toast.show();
+                Log.i(TAG, "I just saw an beacon for the first time!");
             }
 
             @Override
             public void didExitRegion(Region region) {
                 //tvMsg.setText("I no longer see an beacon");
-                Toast toast = Toast.makeText(getApplicationContext(),"I no longer see an beacon." , Toast.LENGTH_SHORT);
-                toast.show();
+                //Toast toast = Toast.makeText(getApplicationContext(),"I no longer see an beacon." , Toast.LENGTH_SHORT);
+                //toast.show();
+                Log.i(TAG, "I no longer see an beacon");
+
             }
 
             @Override
             public void didDetermineStateForRegion(int state, Region region) {
                 //tvMsg.setText("I have just switched from seeing/not seeing beacons: " + state);
-                Toast toast = Toast.makeText(getApplicationContext(),"I have just switched from seeing/not seeing beacons: " + state , Toast.LENGTH_SHORT);
-                toast.show();
-
+                //Toast toast = Toast.makeText(getApplicationContext(),"I have just switched from seeing/not seeing beacons: " + state , Toast.LENGTH_SHORT);
+                //toast.show();
+                Log.i(TAG, "I have just switched from seeing/not seeing beacons: "+state);
             }
         });
 
