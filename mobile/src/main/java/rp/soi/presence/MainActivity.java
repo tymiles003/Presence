@@ -1,7 +1,9 @@
 package rp.soi.presence;
 
 import android.app.Activity;
+import android.content.Intent;
 import android.os.Bundle;
+import android.os.RemoteException;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -19,8 +21,12 @@ import com.parse.ParseObject;
 import com.parse.ParseQuery;
 
 import org.altbeacon.beacon.Beacon;
+import org.altbeacon.beacon.BeaconConsumer;
+import org.altbeacon.beacon.BeaconManager;
 import org.altbeacon.beacon.BeaconParser;
 import org.altbeacon.beacon.BeaconTransmitter;
+import org.altbeacon.beacon.MonitorNotifier;
+import org.altbeacon.beacon.Region;
 
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -55,7 +61,8 @@ public class MainActivity extends Activity {
         btn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                ParseQuery<ParseObject> query = ParseQuery.getQuery("Proxivent");
+
+                /*ParseQuery<ParseObject> query = ParseQuery.getQuery("Proxivent");
                 query.whereEqualTo("major", "1111");
                 query.findInBackground(new FindCallback<ParseObject>() {
                     public void done(List<ParseObject> proxivents, ParseException e) {
@@ -72,7 +79,10 @@ public class MainActivity extends Activity {
                             Log.d("score", "Error: " + e.getMessage());
                         }
                     }
-                });
+                });*/
+
+                Intent i = new Intent(getBaseContext(), BeaconDetectActivity.class);
+                startActivity(i);
             }
         });
 
@@ -128,4 +138,7 @@ public class MainActivity extends Activity {
 
         return super.onOptionsItemSelected(item);
     }
+
+
+
 }

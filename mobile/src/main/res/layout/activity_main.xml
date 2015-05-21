@@ -11,24 +11,27 @@
         android:id="@+id/listView"
         android:layout_alignParentTop="true"
         android:layout_alignParentStart="true"
+        android:background="@android:color/darker_gray"
         android:layout_above="@+id/buttonGetProxiventData"
-        android:background="@android:color/darker_gray" />
+        android:layout_alignEnd="@+id/buttonStopBeacon" />
 
     <Button
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="Get Proxivent Data"
+        android:text="Detect Proxivents"
         android:id="@+id/buttonGetProxiventData"
+        android:elevation="5dp"
         android:layout_alignParentBottom="true"
         android:layout_alignParentStart="true" />
 
     <Button
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="Stop Beacon Tx"
+        android:text="Stop Beaconing"
         android:id="@+id/buttonStopBeacon"
         android:layout_below="@+id/listView"
         android:layout_alignParentEnd="true"
-        android:layout_toEndOf="@+id/buttonGetProxiventData" />
+        android:layout_toEndOf="@+id/buttonGetProxiventData"
+        android:elevation="5dp" />
 
 </RelativeLayout>
