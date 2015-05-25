@@ -6,14 +6,20 @@ import android.os.RemoteException;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.widget.EditText;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import org.altbeacon.beacon.Beacon;
 import org.altbeacon.beacon.BeaconConsumer;
 import org.altbeacon.beacon.BeaconManager;
 import org.altbeacon.beacon.BeaconParser;
+import org.altbeacon.beacon.Identifier;
 import org.altbeacon.beacon.MonitorNotifier;
+import org.altbeacon.beacon.RangeNotifier;
 import org.altbeacon.beacon.Region;
+
+import java.util.Collection;
 
 
 public class BeaconDetectActivity extends Activity implements BeaconConsumer {
@@ -26,11 +32,8 @@ public class BeaconDetectActivity extends Activity implements BeaconConsumer {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_beacon_detect);
-        tvMsg = (TextView) findViewById(R.id.textView);
-
         beaconManager = BeaconManager.getInstanceForApplication(this);
-        beaconManager.getBeaconParsers().add(new BeaconParser().
-                setBeaconLayout("m:2-3=0215,i:4-19,i:20-21,i:22-23,p:24-24"));
+        beaconManager.getBeaconParsers().add(new BeaconParser().setBeaconLayout("m:2-3=0215,i:4-19,i:20-21,i:22-23,p:24-24"));
         beaconManager.bind(this);
     }
 
@@ -58,42 +61,37 @@ public class BeaconDetectActivity extends Activity implements BeaconConsumer {
 
     @Override
     public void onBeaconServiceConnect() {
-        beaconManager.setMonitorNotifier(new MonitorNotifier() {
-            @Override
-            public void didEnterRegion(Region region) {
-                //tvMsg.setText("I just saw an beacon for the first time!");
-                //Toast toast = Toast.makeText(getApplicationContext(),"I just saw an beacon for the first time!" , Toast.LENGTH_SHORT);
-                //toast.show();
-                Log.i(TAG, "I just saw an beacon for the first time!");
-            }
+        beaconManager.setRangeNotifier(new RangeNotifier() {
 
             @Override
-            public void didExitRegion(Region region) {
-                //tvMsg.setText("I no longer see an beacon");
-                //Toast toast = Toast.makeText(getApplicationContext(),"I no longer see an beacon." , Toast.LENGTH_SHORT);
-                //toast.show();
-                Log.i(TAG, "I no longer see an beacon");
+            public void didRangeBeaconsInRegion(Collection<Beacon> beacons, Region region) {
+                if (beacons.size() > 0) {
+                    Beacon firstBeacon = beacons.iterator().next();
+                    Log.i(TAG, "The first beacon "+firstBeacon.toString()+" is about "+firstBeacon.getDistance()+" meters away.");
+                    logToDisplay("The first beacon " + firstBeacon.toString() + " is about " + firstBeacon.getDistance() + " meters away.");
 
-            }
-
-            @Override
-            public void didDetermineStateForRegion(int state, Region region) {
-                //tvMsg.setText("I have just switched from seeing/not seeing beacons: " + state);
-                //Toast toast = Toast.makeText(getApplicationContext(),"I have just switched from seeing/not seeing beacons: " + state , Toast.LENGTH_SHORT);
-                //toast.show();
-                Log.i(TAG, "I have just switched from seeing/not seeing beacons: "+state);
+                }
             }
         });
 
         try {
-            beaconManager.startMonitoringBeaconsInRegion(new Region("myMonitoringUniqueId", null, null, null));
-        } catch (RemoteException e) {    }
+            beaconManager.startRangingBeaconsInRegion(new Region("myRangingUniqueId", null, null, null));
+        } catch (RemoteException e) {   }
     }
 
     @Override
     protected void onDestroy() {
         super.onDestroy();
         beaconManager.unbind(this);
+    }
+
+    private void logToDisplay(final String line) {
+        runOnUiThread(new Runnable() {
+            public void run() {
+                EditText et = (EditText) BeaconDetectActivity.this.findViewById(R.id.editText);
+                et.append(line + "\n");
+            }
+        });
     }
 
 }
