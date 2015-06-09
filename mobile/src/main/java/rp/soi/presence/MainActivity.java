@@ -110,7 +110,25 @@ public class MainActivity extends Activity {
         btnStopBeacon.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                beaconTransmitter.stopAdvertising();
+                //beaconTransmitter.stopAdvertising();
+                ParseQuery<ParseObject> query = ParseQuery.getQuery("Proxivent");
+                query.whereEqualTo("major", "1111");
+                query.findInBackground(new FindCallback<ParseObject>() {
+                    public void done(List<ParseObject> proxivents, ParseException e) {
+                        if (e == null) {
+                            Log.d("score", "Retrieved " + proxivents.size() + " proxivents");
+                            for (ParseObject p : proxivents) {
+                                proxiventNames.add(p.getString("proxiventName"));
+                            }
+
+                            ListView lv = (ListView) findViewById(R.id.listView);
+                            ArrayAdapter<String> adapter = new ArrayAdapter<String>(getBaseContext(), android.R.layout.simple_list_item_1, proxiventNames);
+                            lv.setAdapter(adapter);
+                        } else {
+                            Log.d("score", "Error: " + e.getMessage());
+                        }
+                    }
+                });
             }
         });
 

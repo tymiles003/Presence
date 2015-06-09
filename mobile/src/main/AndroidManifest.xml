@@ -37,6 +37,10 @@
             android:name=".BeaconDetectActivity"
             android:label="@string/title_activity_beacon_detect" >
         </activity>
+        <activity
+            android:name=".ProxeventsListActivity"
+            android:label="@string/title_activity_proxevents_list" >
+        </activity>
     </application>
 
 </manifest>
