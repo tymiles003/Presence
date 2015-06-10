@@ -20,22 +20,6 @@
             android:layout_alignEnd="@+id/buttonStopBeacon" />
 
         <Button
-            android:layout_width="71dp"
-            android:layout_height="wrap_content"
-            android:id="@+id/buttonStopBeacon"
-            android:layout_below="@+id/listView"
-            android:layout_alignParentEnd="true"
-            android:layout_toEndOf="@+id/buttonGetProxiventData"
-            android:elevation="20dp"
-            android:layout_gravity="right|bottom"
-            android:textSize="30dp"
-            android:textStyle="bold|normal"
-            android:textColor="@android:color/white"
-            android:theme="@style/AppTheme"
-            android:background="@android:color/holo_blue_light"
-            android:text="+" />
-
-        <Button
             android:layout_width="119dp"
             android:layout_height="65dp"
             android:text="Detect Proxivents"
@@ -45,6 +29,18 @@
             android:layout_alignParentStart="true"
             android:layout_gravity="right|center_vertical"
             android:background="@android:color/holo_purple" />
+
+        <ImageButton
+            android:layout_width="@dimen/fab_size"
+            android:layout_height="@dimen/fab_size"
+            android:id="@+id/buttonStopBeacon"
+            android:background="@drawable/ripple"
+            android:src="@mipmap/ic_add"
+            android:layout_marginRight="@dimen/activity_horizontal_margin"
+            android:layout_marginBottom="@dimen/activity_vertical_margin"
+            android:layout_gravity="bottom|right"
+            android:stateListAnimator="@drawable/anim"
+            android:elevation="@dimen/button_elevation" />
 
     </FrameLayout>
 

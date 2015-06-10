@@ -12,6 +12,7 @@ import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.ImageButton;
 import android.widget.ListView;
 
 import com.parse.FindCallback;
@@ -106,7 +107,7 @@ public class MainActivity extends Activity {
             }
         });
 
-        Button btnStopBeacon = (Button) findViewById(R.id.buttonStopBeacon);
+        ImageButton btnStopBeacon = (ImageButton) findViewById(R.id.buttonStopBeacon);
         btnStopBeacon.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
