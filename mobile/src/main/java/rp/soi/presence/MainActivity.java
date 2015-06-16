@@ -3,7 +3,6 @@ package rp.soi.presence;
 import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
-import android.os.RemoteException;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -11,9 +10,9 @@ import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
-import android.widget.EditText;
 import android.widget.ImageButton;
 import android.widget.ListView;
+import android.widget.Toast;
 
 import com.parse.FindCallback;
 import com.parse.Parse;
@@ -22,21 +21,17 @@ import com.parse.ParseObject;
 import com.parse.ParseQuery;
 
 import org.altbeacon.beacon.Beacon;
-import org.altbeacon.beacon.BeaconConsumer;
-import org.altbeacon.beacon.BeaconManager;
 import org.altbeacon.beacon.BeaconParser;
 import org.altbeacon.beacon.BeaconTransmitter;
-import org.altbeacon.beacon.MonitorNotifier;
-import org.altbeacon.beacon.Region;
 
 import java.util.ArrayList;
 import java.util.Arrays;
-import java.util.Iterator;
 import java.util.List;
 
 
 public class MainActivity extends Activity {
 
+    protected static final String TAG ="PRESENCE";
     ArrayList<String> proxiventNames = new ArrayList<String>();
     Beacon beacon;
     BeaconParser beaconParser;
@@ -58,7 +53,7 @@ public class MainActivity extends Activity {
 //        proxiventObj.put("minor","2222");
 //        proxiventObj.saveInBackground();
 
-        Button btn = (Button) findViewById(R.id.buttonGetProxiventData);
+        Button btn = (Button) findViewById(R.id.buttonDetectBeacons);
         btn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -91,6 +86,8 @@ public class MainActivity extends Activity {
         lv.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
+                Log.i(TAG, "Inside onItemClick");
+
                 beacon = new Beacon.Builder()
                         .setId1("2f234454-cf6d-4a0f-adf2-f4911ba9ffa6")
                         .setId2("1")
@@ -103,12 +100,35 @@ public class MainActivity extends Activity {
                 beaconParser = new BeaconParser()
                         .setBeaconLayout("m:2-3=beac,i:4-19,i:20-21,i:22-23,p:24-24,d:25-25");
                 beaconTransmitter = new BeaconTransmitter(getApplicationContext(), beaconParser);
-                beaconTransmitter.startAdvertising(beacon);
+                int result = BeaconTransmitter.checkTransmissionSupported(getApplicationContext());
+                if (result == BeaconTransmitter.SUPPORTED) {
+                    beaconTransmitter.startAdvertising(beacon);
+                    Log.i(TAG, "Phone has started transmitting as a Beacon...");
+                    Toast toast = Toast.makeText(getApplicationContext(), "Phone has started transmitting as a Beacon...", Toast.LENGTH_LONG);
+                    toast.show();
+                } else {
+                    int duration = 3;
+                    Log.i(TAG, "Reason: Beacon cannot txb not supported");
+                    Toast toast = Toast.makeText(getApplicationContext(), "Your device does not support BLE Transmission", Toast.LENGTH_LONG);
+                    toast.show();
+                }
             }
         });
 
         ImageButton btnStopBeacon = (ImageButton) findViewById(R.id.buttonStopBeacon);
         btnStopBeacon.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                beaconTransmitter.stopAdvertising();
+                Log.i(TAG, "Your device has stopped BLE Transmission");
+                Toast toast = Toast.makeText(getApplicationContext(), "Your device has stopped BLE Transmission", Toast.LENGTH_LONG);
+                toast.show();
+
+            }
+        });
+
+        ImageButton btnGetProxevents = (ImageButton) findViewById(R.id.buttonGetProxevents);
+        btnGetProxevents.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 //beaconTransmitter.stopAdvertising();
@@ -132,6 +152,7 @@ public class MainActivity extends Activity {
                 });
             }
         });
+
 
     }
 

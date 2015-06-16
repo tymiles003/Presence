@@ -24,7 +24,7 @@ import java.util.Collection;
 
 public class BeaconDetectActivity extends Activity implements BeaconConsumer {
 
-    protected static final String TAG ="###############";
+    protected static final String TAG ="PRESENCE";
     BeaconManager beaconManager;
     TextView tvMsg;
 
