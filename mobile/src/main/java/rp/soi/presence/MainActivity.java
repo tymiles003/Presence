@@ -45,7 +45,6 @@ public class MainActivity extends Activity {
         // Enable Local Datastore.
         Parse.enableLocalDatastore(this);
         Parse.initialize(this, "6te9X5fuh4L6gvvHTEwbiTBpsytqNHuTFt3miiw2", "IpdRRmXSuDDk2VV7VumtuGobi2240w5xUwNlUnuY");
-
 //        ParseObject proxiventObj = new ParseObject("Proxivent");
 //        proxiventObj.put("proxiventName", "Staff Sharing");
 //        proxiventObj.put("UUID","someBLEUUID");
@@ -89,16 +88,16 @@ public class MainActivity extends Activity {
                 Log.i(TAG, "Inside onItemClick");
 
                 beacon = new Beacon.Builder()
-                        .setId1("2f234454-cf6d-4a0f-adf2-f4911ba9ffa6")
-                        .setId2("1")
-                        .setId3("2")
-                        .setManufacturer(0x0118) // Radius Networks.  Change this for other beacon layouts
+                        .setId1("0c407bbb-015f-4ad1-a33c-66151a96f5ec")
+                        .setId2("26")
+                        .setId3("17")
+                        .setManufacturer(0x004c) // Apple Inc.  Change this for other beacon layouts
                         .setTxPower(-59)
-                        .setDataFields(Arrays.asList(new Long[]{0l})) // Remove this for beacon layouts without d: fields
+                        //.setDataFields(Arrays.asList(new Long[]{0l})) // Remove this for beacon layouts without d: fields
                         .build();
 // Change the layout below for other beacon types
-                beaconParser = new BeaconParser()
-                        .setBeaconLayout("m:2-3=beac,i:4-19,i:20-21,i:22-23,p:24-24,d:25-25");
+                //beaconParser = new BeaconParser().setBeaconLayout("m:2-3=beac,i:4-19,i:20-21,i:22-23,p:24-24,d:25-25");
+                beaconParser = new BeaconParser().setBeaconLayout("m:2-3=0215,i:4-19,i:20-21,i:22-23,p:24-24");
                 beaconTransmitter = new BeaconTransmitter(getApplicationContext(), beaconParser);
                 int result = BeaconTransmitter.checkTransmissionSupported(getApplicationContext());
                 if (result == BeaconTransmitter.SUPPORTED) {

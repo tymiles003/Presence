@@ -33,7 +33,8 @@ public class BeaconDetectActivity extends Activity implements BeaconConsumer {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_beacon_detect);
         beaconManager = BeaconManager.getInstanceForApplication(this);
-        beaconManager.getBeaconParsers().add(new BeaconParser().setBeaconLayout("m:2-3=0215,i:4-19,i:20-21,i:22-23,p:24-24"));
+        beaconManager.getBeaconParsers().add(new BeaconParser().setBeaconLayout("m:2-3=0215,i:4-19,i:20-21,i:22-23,p:24-24,d:25-25"));
+        //beaconManager.getBeaconParsers().add(new BeaconParser().setBeaconLayout("m:2-3=beac,i:4-19,i:20-21,i:22-23,p:24-24,d:25-25"));
         beaconManager.bind(this);
     }
 
@@ -68,7 +69,7 @@ public class BeaconDetectActivity extends Activity implements BeaconConsumer {
                 if (beacons.size() > 0) {
                     Beacon firstBeacon = beacons.iterator().next();
                     Log.i(TAG, "The first beacon "+firstBeacon.toString()+" is about "+firstBeacon.getDistance()+" meters away.");
-                    logToDisplay("The first beacon " + firstBeacon.toString() + " is about " + firstBeacon.getDistance() + " meters away.");
+                    logToDisplay("The first beacon " + firstBeacon.toString() + "\n is about " + firstBeacon.getDistance() + " meters away.\n\n");
 
                 }
             }
