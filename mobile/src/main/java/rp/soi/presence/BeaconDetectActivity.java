@@ -69,7 +69,8 @@ public class BeaconDetectActivity extends Activity implements BeaconConsumer {
                 if (beacons.size() > 0) {
                     Beacon firstBeacon = beacons.iterator().next();
                     Log.i(TAG, "The first beacon "+firstBeacon.toString()+" is about "+firstBeacon.getDistance()+" meters away.");
-                    logToDisplay("The first beacon " + firstBeacon.toString() + "\n is about " + firstBeacon.getDistance() + " meters away.\n\n");
+                    logToDisplay("UUID: " + firstBeacon.getId1() + "\nMajor: " + firstBeacon.getId2() + "\nMinor: " + firstBeacon.getId3()
+                            + "\nManufacturerID: " + firstBeacon.getManufacturer() + "\n\n");
 
                 }
             }
