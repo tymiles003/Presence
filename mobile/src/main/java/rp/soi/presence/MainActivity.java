@@ -16,9 +16,11 @@ import android.widget.Toast;
 
 import com.parse.FindCallback;
 import com.parse.Parse;
+import com.parse.ParseAnalytics;
 import com.parse.ParseException;
 import com.parse.ParseObject;
 import com.parse.ParseQuery;
+import com.parse.ParseUser;
 
 import org.altbeacon.beacon.Beacon;
 import org.altbeacon.beacon.BeaconParser;
@@ -42,9 +44,11 @@ public class MainActivity extends Activity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+        // Track app opens.
+        ParseAnalytics.trackAppOpenedInBackground(getIntent());
         //Enable Local Datastore.
-        Parse.enableLocalDatastore(this);
-        Parse.initialize(this, "6te9X5fuh4L6gvvHTEwbiTBpsytqNHuTFt3miiw2", "IpdRRmXSuDDk2VV7VumtuGobi2240w5xUwNlUnuY");
+        //Parse.enableLocalDatastore(this);
+        //Parse.initialize(this, "6te9X5fuh4L6gvvHTEwbiTBpsytqNHuTFt3miiw2", "IpdRRmXSuDDk2VV7VumtuGobi2240w5xUwNlUnuY");
 //        ParseObject proxiventObj = new ParseObject("Proxivent");
 //        proxiventObj.put("proxiventName", "Staff Sharing");
 //        proxiventObj.put("UUID","someBLEUUID");
@@ -151,10 +155,7 @@ public class MainActivity extends Activity {
                 });
             }
         });
-
-
     }
-
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
@@ -171,7 +172,11 @@ public class MainActivity extends Activity {
         int id = item.getItemId();
 
         //noinspection SimplifiableIfStatement
-        if (id == R.id.action_settings) {
+        if (id == R.id.action_logout) {
+            ParseUser.logOut();
+            Intent intent = new Intent(MainActivity.this, DispatchActivity.class);
+            intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK | Intent.FLAG_ACTIVITY_NEW_TASK);
+            startActivity(intent);
             return true;
         }
 
