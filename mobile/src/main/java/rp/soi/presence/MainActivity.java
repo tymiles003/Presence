@@ -174,7 +174,7 @@ public class MainActivity extends Activity {
         //noinspection SimplifiableIfStatement
         if (id == R.id.action_logout) {
             ParseUser.logOut();
-            Intent intent = new Intent(MainActivity.this, DispatchActivity.class);
+            Intent intent = new Intent(MainActivity.this, DispatchingActivity.class);
             intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK | Intent.FLAG_ACTIVITY_NEW_TASK);
             startActivity(intent);
             return true;
