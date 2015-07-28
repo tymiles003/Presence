@@ -8,14 +8,10 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.widget.EditText;
 import android.widget.TextView;
-import android.widget.Toast;
-
 import org.altbeacon.beacon.Beacon;
 import org.altbeacon.beacon.BeaconConsumer;
 import org.altbeacon.beacon.BeaconManager;
 import org.altbeacon.beacon.BeaconParser;
-import org.altbeacon.beacon.Identifier;
-import org.altbeacon.beacon.MonitorNotifier;
 import org.altbeacon.beacon.RangeNotifier;
 import org.altbeacon.beacon.Region;
 
@@ -70,7 +66,7 @@ public class BeaconDetectActivity extends Activity implements BeaconConsumer {
                     Beacon firstBeacon = beacons.iterator().next();
                     Log.i(TAG, "The first beacon "+firstBeacon.toString()+" is about "+firstBeacon.getDistance()+" meters away.");
                     logToDisplay("UUID: " + firstBeacon.getId1() + "\nMajor: " + firstBeacon.getId2() + "\nMinor: " + firstBeacon.getId3()
-                            + "\nManufacturerID: " + firstBeacon.getManufacturer() + "\n\n");
+                            + "\nManufacturerID: " + firstBeacon.getManufacturer() + "\nDistance: " + firstBeacon.getDistance()  + "\n\n");
 
                 }
             }

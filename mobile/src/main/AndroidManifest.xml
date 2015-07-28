@@ -4,7 +4,7 @@
 
     <uses-sdk
         android:minSdkVersion="18"
-        android:targetSdkVersion="18" />
+        android:targetSdkVersion="22" />
 
     <uses-permission android:name="android.permission.INTERNET" />
     <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
@@ -55,12 +55,17 @@
         </activity>
         <activity
             android:name=".DispatchingActivity"
-            android:label="@string/title_activity_dispatching" >
+            android:label="@string/title_activity_dispatching"
+            android:noHistory="true" >
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
+        </activity>
+        <activity
+            android:name=".NearbyProxeventsActivity"
+            android:label="@string/title_activity_nearby_proxevents" >
         </activity>
     </application>
 

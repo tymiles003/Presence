@@ -7,6 +7,7 @@ import com.parse.PushService;
  * Created by geraldlim on 27/7/15.
  */
 public class PresenceApp  extends android.app.Application{
+
     public PresenceApp() {
     }
 

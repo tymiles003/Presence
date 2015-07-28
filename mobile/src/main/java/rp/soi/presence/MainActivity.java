@@ -1,9 +1,13 @@
 package rp.soi.presence;
 
 import android.app.Activity;
+import android.app.AlertDialog;
+import android.app.FragmentManager;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.util.Log;
+import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
@@ -39,13 +43,24 @@ public class MainActivity extends Activity {
     Beacon beacon;
     BeaconParser beaconParser;
     BeaconTransmitter beaconTransmitter;
+    String uuid = "0c407bbb-015f-4ad1-a33c-66151a96f5ec"; // To be ramdomised
+    String major ="88";
+    String minor = "99";
+    SharedPreferences sharedPreferences;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+        sharedPreferences = getSharedPreferences("PRESENCE", 0);
+        SharedPreferences.Editor editor = sharedPreferences.edit();
+        editor.putString("UUID",uuid);
+        editor.putString("Major",major);
+        editor.putString("Minor",minor);
+        editor.commit();
+
         // Track app opens.
-        ParseAnalytics.trackAppOpenedInBackground(getIntent());
+        //ParseAnalytics.trackAppOpenedInBackground(getIntent());
         //Enable Local Datastore.
         //Parse.enableLocalDatastore(this);
         //Parse.initialize(this, "6te9X5fuh4L6gvvHTEwbiTBpsytqNHuTFt3miiw2", "IpdRRmXSuDDk2VV7VumtuGobi2240w5xUwNlUnuY");
@@ -55,6 +70,10 @@ public class MainActivity extends Activity {
 //        proxiventObj.put("major","1111");
 //        proxiventObj.put("minor","2222");
 //        proxiventObj.saveInBackground();
+
+
+        updateListView();
+
 
         Button btn = (Button) findViewById(R.id.buttonDetectBeacons);
         btn.setOnClickListener(new View.OnClickListener() {
@@ -92,12 +111,12 @@ public class MainActivity extends Activity {
                 Log.i(TAG, "Inside onItemClick");
 
                 beacon = new Beacon.Builder()
-                        .setId1("0c407bbb-015f-4ad1-a33c-66151a96f5ec")
-                        .setId2("26")
-                        .setId3("17")
+                        .setId1(uuid)
+                        .setId2(major)
+                        .setId3(minor)
                         .setManufacturer(0x004c) // Apple Inc.  Change this for other beacon layouts
                         .setTxPower(-59)
-                        //.setDataFields(Arrays.asList(new Long[]{0l})) // Remove this for beacon layouts without d: fields
+                                //.setDataFields(Arrays.asList(new Long[]{0l})) // Remove this for beacon layouts without d: fields
                         .build();
 // Change the layout below for other beacon types
                 //beaconParser = new BeaconParser().setBeaconLayout("m:2-3=beac,i:4-19,i:20-21,i:22-23,p:24-24,d:25-25");
@@ -130,6 +149,19 @@ public class MainActivity extends Activity {
             }
         });
 
+        ImageButton btnAddProxevents = (ImageButton) findViewById(R.id.buttonGetProxevents);
+        btnAddProxevents.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                NewProxeventFragment newPEFrag = new NewProxeventFragment();
+                FragmentManager fragmentManager = getFragmentManager();
+                newPEFrag.show(fragmentManager, "tag");
+                updateListView();
+
+            }
+        });
+
+        /*
         ImageButton btnGetProxevents = (ImageButton) findViewById(R.id.buttonGetProxevents);
         btnGetProxevents.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -154,7 +186,7 @@ public class MainActivity extends Activity {
                     }
                 });
             }
-        });
+        }); */
     }
 
     @Override
@@ -181,6 +213,27 @@ public class MainActivity extends Activity {
         }
 
         return super.onOptionsItemSelected(item);
+    }
+
+    private void updateListView(){
+        ParseQuery<ParseObject> query = ParseQuery.getQuery("Proxivent");
+        query.whereEqualTo("UUID", "0c407bbb-015f-4ad1-a33c-66151a96f5ec");
+        query.findInBackground(new FindCallback<ParseObject>() {
+            public void done(List<ParseObject> proxivents, ParseException e) {
+                if (e == null) {
+                    Log.d("PRESENCE", "Retrieved " + proxivents.size() + " proxivents");
+                    for (ParseObject p : proxivents) {
+                        proxiventNames.add(p.getString("Title"));
+                    }
+
+                    ListView lv = (ListView) findViewById(R.id.listView);
+                    ArrayAdapter<String> adapter = new ArrayAdapter<String>(getBaseContext(), android.R.layout.simple_list_item_1, proxiventNames);
+                    lv.setAdapter(adapter);
+                } else {
+                    Log.d("score", "Error: " + e.getMessage());
+                }
+            }
+        });
     }
 
 
