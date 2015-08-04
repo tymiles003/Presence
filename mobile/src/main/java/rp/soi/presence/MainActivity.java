@@ -158,6 +158,7 @@ public class MainActivity extends Activity {
                 newPEFrag.show(fragmentManager, "tag");
                 updateListView();
 
+
             }
         });
 
@@ -222,6 +223,7 @@ public class MainActivity extends Activity {
             public void done(List<ParseObject> proxivents, ParseException e) {
                 if (e == null) {
                     Log.d("PRESENCE", "Retrieved " + proxivents.size() + " proxivents");
+                    proxiventNames.clear();
                     for (ParseObject p : proxivents) {
                         proxiventNames.add(p.getString("Title"));
                     }

@@ -23,9 +23,11 @@ public class NewProxeventFragment extends DialogFragment {
 
     View view;
     SharedPreferences sharedPreferences;
+    Context context;
     @Override
     public Dialog onCreateDialog(Bundle savedInstanceState) {
-        sharedPreferences = PreferenceManager.getDefaultSharedPreferences(getActivity());
+
+        sharedPreferences = getActivity().getSharedPreferences("PRESENCE", 0);
         AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
         LayoutInflater inflater = getActivity().getLayoutInflater();
         view = inflater.inflate(R.layout.new_proxevent_layout, null);
@@ -41,7 +43,7 @@ public class NewProxeventFragment extends DialogFragment {
                         ParseObject proxiventObj = new ParseObject("Proxivent");
                         proxiventObj.put("Title", etTitle.getText().toString());
                         proxiventObj.put("Description", etDesc.getText().toString());
-                        proxiventObj.put("UUID",sharedPreferences.getString("UUID", "0c407bbb-015f-4ad1-a33c-66151a96f5ec"));
+                        proxiventObj.put("UUID",sharedPreferences.getString("UUID", "AAAA"));
                         proxiventObj.put("Major", sharedPreferences.getString("Major", "1111"));
                         proxiventObj.put("Minor",sharedPreferences.getString("Minor", "2222"));
                         proxiventObj.saveInBackground();

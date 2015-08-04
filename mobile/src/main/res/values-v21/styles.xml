@@ -2,4 +2,9 @@
 <resources>
     <style name="AppTheme" parent="android:Theme.Material">
     </style>
+    <style name="FloatingImageButtons">
+        <item name="android:color">?android:colorControlHighlight</item>
+        <item name="android:shape">oval</item>
+        <item name="android:solidColor">#2196F3</item>
+    </style>
 </resources>
