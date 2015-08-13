@@ -14,6 +14,7 @@ import android.widget.Toast;
 
 import com.parse.LogInCallback;
 import com.parse.ParseException;
+import com.parse.ParseInstallation;
 import com.parse.ParseUser;
 
 
@@ -92,6 +93,9 @@ public class LoginActivity extends Activity {
                     // Show the error message
                     Toast.makeText(LoginActivity.this, e.getMessage(), Toast.LENGTH_LONG).show();
                 } else {
+                    // Associate Installation to userid
+                    ParseInstallation.getCurrentInstallation().put("userId", ParseUser.getCurrentUser().getObjectId());
+                    ParseInstallation.getCurrentInstallation().saveInBackground();
                     // Start an intent for the dispatch activity
                     Intent intent = new Intent(LoginActivity.this, DispatchingActivity.class);
                     intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK | Intent.FLAG_ACTIVITY_NEW_TASK);

@@ -22,6 +22,7 @@ import com.parse.FindCallback;
 import com.parse.Parse;
 import com.parse.ParseAnalytics;
 import com.parse.ParseException;
+import com.parse.ParseInstallation;
 import com.parse.ParseObject;
 import com.parse.ParseQuery;
 import com.parse.ParseUser;
@@ -44,8 +45,8 @@ public class MainActivity extends Activity {
     BeaconParser beaconParser;
     BeaconTransmitter beaconTransmitter;
     String uuid = "0c407bbb-015f-4ad1-a33c-66151a96f5ec"; // To be ramdomised
-    String major ="88";
-    String minor = "99";
+    String major ="65535";
+    String minor = "0";
     SharedPreferences sharedPreferences;
 
     @Override
@@ -111,7 +112,7 @@ public class MainActivity extends Activity {
                 Log.i(TAG, "Inside onItemClick");
 
                 beacon = new Beacon.Builder()
-                        .setId1(uuid)
+                        .setId1(ParseInstallation.getCurrentInstallation().getInstallationId().toString())
                         .setId2(major)
                         .setId3(minor)
                         .setManufacturer(0x004c) // Apple Inc.  Change this for other beacon layouts

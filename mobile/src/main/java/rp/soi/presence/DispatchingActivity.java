@@ -1,9 +1,11 @@
 package rp.soi.presence;
 
 import android.app.Activity;
+import android.app.Application;
 import android.content.Intent;
 import android.os.Bundle;
 
+import com.parse.ParseInstallation;
 import com.parse.ParseUser;
 
 public class DispatchingActivity extends Activity {
@@ -13,8 +15,10 @@ public class DispatchingActivity extends Activity {
     //included some comments
     // some more comments
     @Override
-    protected void onCreate(Bundle savedInstanceState) {
+    public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        //super.onCreate();
+        ParseInstallation.getCurrentInstallation().saveInBackground();
         // Check if there is current user info
         if (ParseUser.getCurrentUser() != null) {
             // Start an intent for the logged in activity
