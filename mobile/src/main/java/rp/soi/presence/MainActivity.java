@@ -3,8 +3,12 @@ package rp.soi.presence;
 import android.app.Activity;
 import android.app.AlertDialog;
 import android.app.FragmentManager;
+import android.bluetooth.BluetoothAdapter;
+import android.bluetooth.BluetoothManager;
+import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.os.Build;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -48,6 +52,7 @@ public class MainActivity extends Activity {
     String major ="65535";
     String minor = "0";
     SharedPreferences sharedPreferences;
+    BluetoothAdapter mBluetoothAdapter;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -111,27 +116,34 @@ public class MainActivity extends Activity {
             public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
                 Log.i(TAG, "Inside onItemClick");
 
-                beacon = new Beacon.Builder()
-                        .setId1(ParseInstallation.getCurrentInstallation().getInstallationId().toString())
-                        .setId2(major)
-                        .setId3(minor)
-                        .setManufacturer(0x004c) // Apple Inc.  Change this for other beacon layouts
-                        .setTxPower(-59)
-                                //.setDataFields(Arrays.asList(new Long[]{0l})) // Remove this for beacon layouts without d: fields
-                        .build();
+                //Check whether user has turn on bluetooth on device
+                final BluetoothManager bluetoothManager =
+                        (BluetoothManager) getSystemService(Context.BLUETOOTH_SERVICE);
+                mBluetoothAdapter = bluetoothManager.getAdapter();
+                // Ensures Bluetooth is available on the device and it is enabled. If not,
+                // displays a dialog requesting user permission to enable Bluetooth.
+                if (mBluetoothAdapter == null || !mBluetoothAdapter.isEnabled()) {
+                    Intent enableBtIntent = new Intent(BluetoothAdapter.ACTION_REQUEST_ENABLE);
+                    startActivity(enableBtIntent);
+                } else if(mBluetoothAdapter.isMultipleAdvertisementSupported()){
+                    beacon = new Beacon.Builder()
+                            .setId1(ParseInstallation.getCurrentInstallation().getInstallationId().toString())
+                            .setId2(major)
+                            .setId3(minor)
+                            .setManufacturer(0x004c) // Apple Inc.  Change this for other beacon layouts
+                            .setTxPower(-59)
+                                    //.setDataFields(Arrays.asList(new Long[]{0l})) // Remove this for beacon layouts without d: fields
+                            .build();
 // Change the layout below for other beacon types
-                //beaconParser = new BeaconParser().setBeaconLayout("m:2-3=beac,i:4-19,i:20-21,i:22-23,p:24-24,d:25-25");
-                beaconParser = new BeaconParser().setBeaconLayout("m:2-3=0215,i:4-19,i:20-21,i:22-23,p:24-24");
-                beaconTransmitter = new BeaconTransmitter(getApplicationContext(), beaconParser);
-                int result = BeaconTransmitter.checkTransmissionSupported(getApplicationContext());
-                if (result == BeaconTransmitter.SUPPORTED) {
+                    //beaconParser = new BeaconParser().setBeaconLayout("m:2-3=beac,i:4-19,i:20-21,i:22-23,p:24-24,d:25-25");
+                    beaconParser = new BeaconParser().setBeaconLayout("m:2-3=0215,i:4-19,i:20-21,i:22-23,p:24-24");
+                    beaconTransmitter = new BeaconTransmitter(getApplicationContext(), beaconParser);
                     beaconTransmitter.startAdvertising(beacon);
                     Log.i(TAG, "Phone has started transmitting as a Beacon...");
                     Toast toast = Toast.makeText(getApplicationContext(), "Phone has started transmitting as a Beacon...", Toast.LENGTH_LONG);
                     toast.show();
-                } else {
-                    int duration = 3;
-                    Log.i(TAG, "Reason: Beacon cannot txb not supported");
+                }else {
+                    Log.i(TAG, "Reason: Your device does not support BLE Transmission");
                     Toast toast = Toast.makeText(getApplicationContext(), "Your device does not support BLE Transmission", Toast.LENGTH_LONG);
                     toast.show();
                 }
@@ -190,6 +202,7 @@ public class MainActivity extends Activity {
             }
         }); */
     }
+
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {

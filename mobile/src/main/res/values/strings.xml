@@ -27,5 +27,9 @@
     <string name="activity_post_title">Create a Post</string>
     <string name="character_count_placeholder">0/140</string>
     <string name="title_activity_nearby_proxevents">Nearby Proxevents</string>
+    <string name="title_activity_main_nav_drawer">MainNavDrawerActivity</string>
+    <string name="title_activity_nav_drawer_adapter">NavDrawerAdapter</string>
+    <string name="drawer_open">Open</string>
+    <string name="drawer_close">Close</string>
 
 </resources>

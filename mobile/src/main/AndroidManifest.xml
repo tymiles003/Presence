@@ -57,15 +57,19 @@
             android:name=".DispatchingActivity"
             android:label="@string/title_activity_dispatching"
             android:noHistory="true" >
+        </activity>
+        <activity
+            android:name=".NearbyProxeventsActivity"
+            android:label="@string/title_activity_nearby_proxevents" >
+        </activity>
+        <activity
+            android:name=".MainNavDrawerActivity"
+            android:label="@string/title_activity_main_nav_drawer" >
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
-        </activity>
-        <activity
-            android:name=".NearbyProxeventsActivity"
-            android:label="@string/title_activity_nearby_proxevents" >
         </activity>
     </application>
 
