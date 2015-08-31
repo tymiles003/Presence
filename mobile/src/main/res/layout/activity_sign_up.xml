@@ -17,10 +17,18 @@
                 android:id="@+id/username_edit_text"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:hint="@string/prompt_username"
+                android:hint="@string/prompt_screen_name"
                 android:inputType="textEmailAddress"
                 android:maxLines="1"
                 android:singleLine="true" />
+
+            <EditText
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:inputType="textEmailAddress"
+                android:ems="10"
+                android:id="@+id/email_edit_text"
+                android:hint="@string/prompt_email" />
 
             <EditText
                 android:id="@+id/password_edit_text"

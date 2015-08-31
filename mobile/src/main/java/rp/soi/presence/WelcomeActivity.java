@@ -1,20 +1,35 @@
 package rp.soi.presence;
 
-import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
+import android.support.v4.app.FragmentActivity;
+import android.support.v4.app.FragmentManager;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
 
+import com.facebook.FacebookSdk;
 
-public class WelcomeActivity extends Activity {
+
+public class WelcomeActivity extends FragmentActivity {
+
+    private FBAuthFragment fbFragment;
+    private FragmentManager fm;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        FacebookSdk.sdkInitialize(getApplicationContext());
+
         setContentView(R.layout.activity_welcome);
+
+        fbFragment = new FBAuthFragment();
+        getSupportFragmentManager()
+                .beginTransaction()
+                .add(R.id.linearlayout1,fbFragment)
+                .commit();
+
 
         // Log in button click handler
         Button loginButton = (Button) findViewById(R.id.login_button);
@@ -33,5 +48,7 @@ public class WelcomeActivity extends Activity {
                 startActivity(new Intent(WelcomeActivity.this, SignUpActivity.class));
             }
         });
+
+
     }
 }

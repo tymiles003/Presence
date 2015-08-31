@@ -31,5 +31,9 @@
     <string name="title_activity_nav_drawer_adapter">NavDrawerAdapter</string>
     <string name="drawer_open">Open</string>
     <string name="drawer_close">Close</string>
+    <string name="facebook_app_id">768539289922273</string>
+
+<!-- TODO: Remove or change this placeholder text -->
+    <string name="hello_blank_fragment">Hello blank fragment</string>
 
 </resources>

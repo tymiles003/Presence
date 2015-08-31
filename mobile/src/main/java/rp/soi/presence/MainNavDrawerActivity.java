@@ -1,7 +1,8 @@
 package rp.soi.presence;
 
-import android.app.Activity;
+
 import android.content.res.Configuration;
+import android.support.v4.app.FragmentActivity;
 import android.support.v4.widget.DrawerLayout;
 import android.os.Bundle;
 import android.support.v4.app.ActionBarDrawerToggle;
@@ -9,13 +10,16 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.ArrayAdapter;
+import android.widget.FrameLayout;
+import android.widget.LinearLayout;
 import android.widget.ListView;
 
 
-public class MainNavDrawerActivity extends Activity {
+public class MainNavDrawerActivity extends FragmentActivity {
 
     private String[] navDrawerItems;
     private DrawerLayout mDrawerLayout;
+    private LinearLayout mMasterViewLayout;
     private ListView mDrawerList;
     private ActionBarDrawerToggle mDrawerToggle;
     private CharSequence mDrawerTitle;
@@ -27,6 +31,7 @@ public class MainNavDrawerActivity extends Activity {
         setContentView(R.layout.activity_main_nav_drawer);
         navDrawerItems = getResources().getStringArray(R.array.nav_drawer_list_items);
         mDrawerLayout = (DrawerLayout) findViewById(R.id.drawer_layout);
+        mMasterViewLayout = (LinearLayout) findViewById(R.id.master_view);
         mDrawerList = (ListView) findViewById(R.id.left_drawer);
         NavDrawerListAdapter ndla = new NavDrawerListAdapter(this, navDrawerItems);
         mDrawerList.setAdapter(ndla);
@@ -97,9 +102,11 @@ public class MainNavDrawerActivity extends Activity {
     @Override
     public boolean onPrepareOptionsMenu(Menu menu) {
         // If the nav drawer is open, hide action items related to the content view
-        boolean drawerOpen = mDrawerLayout.isDrawerOpen(mDrawerList);
+        boolean drawerOpen = mDrawerLayout.isDrawerOpen(mMasterViewLayout);
         menu.setGroupVisible(0,!drawerOpen);
         //menu.findItem(R.id.action_settings).setVisible(!drawerOpen);
         return super.onPrepareOptionsMenu(menu);
     }
+
+
 }
