@@ -1,6 +1,8 @@
 package rp.soi.presence;
 
+import com.facebook.FacebookSdk;
 import com.parse.Parse;
+import com.parse.ParseFacebookUtils;
 import com.parse.PushService;
 
 /**
@@ -18,7 +20,8 @@ public class PresenceApp  extends android.app.Application{
         // Initialize the Parse SDK.
         Parse.enableLocalDatastore(this);
         Parse.initialize(this, "lyqZPUjNKWS49HhSDErMm9bmOS4Ky1IRv6sCTpjt", "xffTEpyindpwEYvEYkJ9G33gjRCHe3wjDKDwR9rZ");
-
+        FacebookSdk.sdkInitialize(getApplicationContext());
+        ParseFacebookUtils.initialize(this);
         // Specify an Activity to handle all pushes by default.
         //PushService.setDefaultPushCallback(this, MainActivity.class);
     }
