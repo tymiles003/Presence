@@ -64,7 +64,7 @@ public class FBAuthFragment extends Fragment {
                                 Log.d("PRESENCE", "Email: " + email);
                                 Log.d("PRESENCE", "JSON: " + object.toString());
                                 dialog = new ProgressDialog(getActivity());
-                                dialog.setMessage("Logging you into Parse...");
+                                dialog.setMessage("Logging into Presence...");
                                 dialog.show();
                                 ParseFacebookUtils.logInInBackground(accessToken, new LogInCallback() {
                                     @Override

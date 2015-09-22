@@ -16,26 +16,13 @@
         android:layout_height="20px" />
 
     <TextView
-        android:layout_width="156dp"
-        android:layout_height="34dp"
+        android:layout_width="match_parent"
+        android:layout_height="43dp"
         android:textAppearance="?android:attr/textAppearanceSmall"
         android:id="@+id/title"
-        android:textStyle="bold"
-        android:gravity="bottom|left"
+        android:gravity="center_vertical|left"
         android:text="Title"
-        android:textSize="@dimen/abc_text_size_medium_material" />
-
-    <TextView
-        android:layout_width="match_parent"
-        android:layout_height="30dp"
-        android:textAppearance="?android:attr/textAppearanceSmall"
-        android:text="00"
-        android:id="@+id/count"
-        android:gravity="bottom|right"
-        android:textSize="@dimen/abc_text_size_medium_material" />
-
-    <Space
-        android:layout_width="20px"
-        android:layout_height="20px" />
+        android:textSize="@dimen/abc_text_size_medium_material"
+        android:textColor="#e1ffffff" />
 
 </LinearLayout>

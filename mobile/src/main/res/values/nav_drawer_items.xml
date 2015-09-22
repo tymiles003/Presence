@@ -1,9 +1,0 @@
-<?xml version="1.0" encoding="utf-8"?>
-<resources>
-    <string-array name="nav_drawer_list_items">
-        <item>Nearby</item>
-        <item>Your Own</item>
-        <item>Past</item>
-
-    </string-array>
-</resources>

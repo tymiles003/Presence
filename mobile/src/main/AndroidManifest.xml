@@ -66,10 +66,6 @@
             </intent-filter>
         </activity>
         <activity
-            android:name=".NearbyProxeventsActivity"
-            android:label="@string/title_activity_nearby_proxevents" >
-        </activity>
-        <activity
             android:name=".MainNavDrawerActivity"
             android:label="@string/title_activity_main_nav_drawer" >
 

@@ -17,7 +17,8 @@
             android:layout_gravity="start"
             android:choiceMode="singleChoice"
             android:divider="@android:color/transparent"
-            android:id="@+id/master_view">
+            android:id="@+id/master_view"
+            android:gravity="start">
              <!--The navigation drawer -->
 
             <TextView
@@ -35,7 +36,8 @@
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 android:dividerHeight="0dp"
-                android:background="#FFFF"/>
+                android:choiceMode="singleChoice"
+                android:background="#d44c4c4c" />
 
         </LinearLayout>
 

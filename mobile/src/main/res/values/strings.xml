@@ -27,7 +27,7 @@
     <string name="activity_post_title">Create a Post</string>
     <string name="character_count_placeholder">0/140</string>
     <string name="title_activity_nearby_proxevents">Nearby Proxevents</string>
-    <string name="title_activity_main_nav_drawer">MainNavDrawerActivity</string>
+    <string name="title_activity_main_nav_drawer">Presence</string>
     <string name="title_activity_nav_drawer_adapter">NavDrawerAdapter</string>
     <string name="drawer_open">Open</string>
     <string name="drawer_close">Close</string>
@@ -36,4 +36,19 @@
 <!-- TODO: Remove or change this placeholder text -->
     <string name="hello_blank_fragment">Hello blank fragment</string>
 
+    <string-array name="nav_drawer_list_items">
+        <item>Scan around</item>
+        <item>Yours</item>
+        <item>Saved</item>
+        <item>Settings</item>
+        <item>Logout</item>
+    </string-array>
+
+    <string-array name="nav_drawer_list_images">
+        <item>ic_search_white_24dp</item>
+        <item>ic_bluetooth_searching_white_24dp</item>
+        <item>ic_bluetooth_searching_white_24dp</item>
+        <item>ic_settings_white_24dp</item>
+        <item>ic_bluetooth_searching_white_24dp</item>
+    </string-array>
 </resources>
