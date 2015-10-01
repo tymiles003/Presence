@@ -23,6 +23,7 @@ import com.parse.LogInCallback;
 import com.parse.ParseException;
 import com.parse.ParseFacebookUtils;
 import com.parse.ParseUser;
+import com.parse.SaveCallback;
 
 import org.json.JSONObject;
 
@@ -32,6 +33,8 @@ public class FBAuthFragment extends Fragment {
     private LoginButton loginButton;
     private CallbackManager callbackManager;
     private ProgressDialog dialog;
+    private String email;
+    private String uid;
 
     public FBAuthFragment() {
         // Required empty public constructor
@@ -59,7 +62,7 @@ public class FBAuthFragment extends Fragment {
                 GraphRequest request = GraphRequest.newMeRequest(accessToken, new GraphRequest.GraphJSONObjectCallback() {
                             @Override
                             public void onCompleted(JSONObject object, GraphResponse response) {
-                                String email = object.optString("email");
+                                email = object.optString("email");
                                 String uid = object.optString("id");
                                 Log.d("PRESENCE", "Email: " + email);
                                 Log.d("PRESENCE", "JSON: " + object.toString());
@@ -69,12 +72,34 @@ public class FBAuthFragment extends Fragment {
                                 ParseFacebookUtils.logInInBackground(accessToken, new LogInCallback() {
                                     @Override
                                     public void done(ParseUser parseUser, ParseException e) {
-                                        dialog.dismiss();
-                                        goBackToDispatchingActivity(ParseUser.getCurrentUser());
 
+                                        if((parseUser!=null) && (parseUser.isNew())){
+                                            Profile profile = Profile.getCurrentProfile();
+                                            if(profile != null){
+                                                Log.d("PRESENCE", "First Name: " + profile.getFirstName());
+                                                Log.d("PRESENCE", "Last Name: " + profile.getLastName());
+                                                Log.d("PRESENCE", "ID: " + profile.getId());
+                                                Log.d("PRESENCE", "Name: " + profile.getName());
+                                                Log.d("PRESENCE", "Email: " + email);
+
+                                                parseUser.put("email", email);
+                                                parseUser.put("firstName", profile.getFirstName());
+                                                parseUser.put("lastName", profile.getLastName());
+                                                parseUser.put("screenName", profile.getFirstName() + " " + profile.getLastName().substring(0,1) + ".");
+                                                parseUser.saveInBackground(new SaveCallback() {
+                                                    @Override
+                                                    public void done(ParseException e) {
+                                                        dialog.dismiss();
+                                                    }
+                                                });
+                                            }
+                                        }
+                                        if(dialog.isShowing()){
+                                            dialog.dismiss();
+                                        }
+                                        goBackToDispatchingActivity();
                                     }
                                 });
-
                             }
                         });
                 Bundle parameters = new Bundle();
@@ -102,16 +127,8 @@ public class FBAuthFragment extends Fragment {
         callbackManager.onActivityResult(requestCode, resultCode, data);
     }
 
-    private void goBackToDispatchingActivity(ParseUser user){
+    private void goBackToDispatchingActivity(){
 
-        Profile profile = Profile.getCurrentProfile();
-
-        if(profile != null){
-            Log.d("MyApp", "First Name: " + profile.getFirstName());
-            Log.d("MyApp", "Last Name: " + profile.getLastName());
-            Log.d("MyApp", "ID: " + profile.getId());
-            Log.d("MyApp", "Name: " + profile.getName());
-        }
         Intent i = new Intent(getActivity().getBaseContext(),DispatchingActivity.class);
         i.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK | Intent.FLAG_ACTIVITY_NEW_TASK);
         startActivity(i);

@@ -4,15 +4,35 @@
     android:layout_height="match_parent"
     android:orientation="vertical">
 
+    <Space
+        android:layout_width="20px"
+        android:layout_height="20px" />
+
     <EditText
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:id="@+id/editText2"
-        android:hint="Enter a title for proxevent" />
+        android:hint="Enter a title for your proxivent"
+        android:background="#dd28c85a"
+        android:textStyle="bold"
+        android:padding="5dp"
+        android:layout_marginLeft="5dp"
+        android:layout_marginRight="5dp"
+        android:inputType="text"
+        android:maxLines="1" />
+
+    <Space
+        android:layout_width="20px"
+        android:layout_height="20px" />
 
     <EditText
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:id="@+id/editText3"
-        android:hint="Brief description" />
+        android:hint="Brief description"
+        android:background="#dd28c85a"
+        android:padding="5dp"
+        android:layout_marginLeft="5dp"
+        android:layout_marginRight="5dp"
+        android:inputType="textMultiLine" />
 </LinearLayout>

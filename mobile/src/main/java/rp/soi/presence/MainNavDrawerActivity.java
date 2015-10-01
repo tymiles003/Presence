@@ -1,13 +1,16 @@
 package rp.soi.presence;
 
 
+import android.app.Activity;
+import android.app.FragmentManager;
 import android.content.Intent;
 import android.content.res.Configuration;
-import android.support.v4.app.FragmentActivity;
-import android.support.v4.widget.DrawerLayout;
+import android.app.FragmentTransaction;
 import android.os.Bundle;
+import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBarDrawerToggle;
 import android.util.Log;
+import android.view.Gravity;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
@@ -19,10 +22,16 @@ import android.widget.ListView;
 import android.widget.TextView;
 
 import com.facebook.login.LoginManager;
+import com.parse.FindCallback;
+import com.parse.ParseException;
+import com.parse.ParseObject;
+import com.parse.ParseQuery;
 import com.parse.ParseUser;
 
+import java.util.List;
 
-public class MainNavDrawerActivity extends FragmentActivity {
+
+public class MainNavDrawerActivity extends Activity {
 
     private String[] navDrawerItems;
     private String[] navDrawerImages;
@@ -31,19 +40,37 @@ public class MainNavDrawerActivity extends FragmentActivity {
     private LinearLayout mMasterViewLayout;
     private ListView mDrawerList;
     private ActionBarDrawerToggle mDrawerToggle;
+    private TextView tvScreenName;
     private CharSequence mDrawerTitle;
     private CharSequence mTitle;
+    private String mScreenName;
+    private FragmentTransaction transaction;
+    private OwnProxiventsFragment ownProxiventsFragment;
+    private FragmentManager fragmentManager;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main_nav_drawer);
-        navDrawerItems = getResources().getStringArray(R.array.nav_drawer_list_items);
-        navDrawerImages = getResources().getStringArray(R.array.nav_drawer_list_images);
+        fragmentManager = getFragmentManager();
+        /*if (savedInstanceState == null) {
+            OwnProxiventsFragment fragment = new OwnProxiventsFragment();
+            transaction.replace(R.id.content_frame, fragment);
+            transaction.commit();
+        }*/
 
         mDrawerLayout = (DrawerLayout) findViewById(R.id.drawer_layout);
         mMasterViewLayout = (LinearLayout) findViewById(R.id.master_view);
+
+        // Set Screen name
+        mScreenName = (String)ParseUser.getCurrentUser().get("screenName");
+        tvScreenName = (TextView) findViewById(R.id.drawer_screen_name);
+        tvScreenName.setText("\n" + "  " + mScreenName + "\n");
+
+        // Set the ListView Menu
         mDrawerList = (ListView) findViewById(R.id.left_drawer);
+        navDrawerItems = getResources().getStringArray(R.array.nav_drawer_list_items);
+        navDrawerImages = getResources().getStringArray(R.array.nav_drawer_list_images);
         NavDrawerListAdapter ndla = new NavDrawerListAdapter(this, navDrawerItems,navDrawerImages);
         mDrawerList.setAdapter(ndla);
         mDrawerList.setOnItemClickListener(new AdapterView.OnItemClickListener() {
@@ -51,6 +78,18 @@ public class MainNavDrawerActivity extends FragmentActivity {
             public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
                 TextView tv = (TextView)view.findViewById(R.id.title);
                 String selectedListItemStr = (String) tv.getText();
+
+                //load own proxivents fragment
+                if(selectedListItemStr.equalsIgnoreCase("Yours")){
+                    ownProxiventsFragment = new OwnProxiventsFragment();
+                    transaction = fragmentManager.beginTransaction();
+                    transaction.replace(R.id.content_frame, ownProxiventsFragment);
+                    transaction.commit();
+                    mDrawerLayout.closeDrawer(Gravity.LEFT);
+                }
+
+
+                // Logout
                 if (selectedListItemStr.equalsIgnoreCase("Logout")){
                     ParseUser.logOut();
                     LoginManager.getInstance().logOut();

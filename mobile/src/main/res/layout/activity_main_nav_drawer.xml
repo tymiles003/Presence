@@ -26,7 +26,7 @@
                 android:layout_height="wrap_content"
                 android:textAppearance="?android:attr/textAppearanceLarge"
                 android:text="User&apos;s Name"
-                android:id="@+id/textView"
+                android:id="@+id/drawer_screen_name"
                 android:background="#ff4584ff"
                 android:autoText="false"
                 android:textColor="#ffffffff" />
@@ -37,7 +37,7 @@
                 android:layout_height="match_parent"
                 android:dividerHeight="0dp"
                 android:choiceMode="singleChoice"
-                android:background="#d44c4c4c" />
+                android:background="#ff595959" />
 
         </LinearLayout>
 

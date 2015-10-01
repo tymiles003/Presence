@@ -1,0 +1,46 @@
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical">
+
+    <Space
+        android:layout_width="20px"
+        android:layout_height="20px" />
+
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="@string/own_proxivents"
+        android:gravity="center_horizontal"
+        android:textStyle="bold" />
+
+    <Space
+        android:layout_width="20px"
+        android:layout_height="20px" />
+
+    <FrameLayout
+        android:id="@+id/layout_own_proxivents_list"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+
+        <android.support.v7.widget.RecyclerView
+            android:id="@+id/recyclerview_own_proxivents"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"/>
+
+        <ImageButton
+            android:layout_width="@dimen/fab_size"
+            android:layout_height="@dimen/fab_size"
+            android:id="@+id/button_add_new_proxivent"
+            android:background="@drawable/ripple"
+            android:src="@mipmap/ic_add_white_24dp"
+            android:layout_marginRight="@dimen/activity_horizontal_margin"
+            android:layout_marginBottom="@dimen/activity_vertical_margin"
+            android:layout_gravity="right|bottom"
+            android:stateListAnimator="@drawable/anim"
+            android:elevation="@dimen/button_elevation" />
+
+    </FrameLayout>
+
+</LinearLayout>
+
