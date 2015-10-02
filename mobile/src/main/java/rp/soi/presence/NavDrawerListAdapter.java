@@ -27,11 +27,6 @@ public class NavDrawerListAdapter extends ArrayAdapter<String> {
         this.navItems = navItems;
         this.navImages = navImages;
 
-        for(int i=0; i<navItems.length;i++){
-            Log.d("PRESENCE", "navItems" + i + " " + navItems[i]);
-            Log.d("PRESENCE", "navImages" + i + " " + navImages[i]);
-
-        }
 
     }
 

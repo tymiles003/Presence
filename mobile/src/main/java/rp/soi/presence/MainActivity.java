@@ -167,7 +167,7 @@ public class MainActivity extends Activity {
             }
         });
 
-        ImageButton btnAddProxevents = (ImageButton) findViewById(R.id.buttonGetProxevents);
+        /*ImageButton btnAddProxevents = (ImageButton) findViewById(R.id.buttonGetProxevents);
         btnAddProxevents.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -178,7 +178,7 @@ public class MainActivity extends Activity {
 
 
             }
-        });
+        });*/
 
         /*
         ImageButton btnGetProxevents = (ImageButton) findViewById(R.id.buttonGetProxevents);

@@ -4,6 +4,8 @@
     <string name="hello_world">Hello world!</string>
     <string name="action_settings">Settings</string>
     <string name="action_logout">Logout</string>
+    <string name="action_edit">Edit</string>
+    <string name="action_delete">Delete</string>
 
     <string name="title_activity_beacon_detect">BeaconDetectActivity</string>
     <string name="title_activity_proxevents_list">ProxeventsListActivity</string>
@@ -43,9 +45,9 @@
 
 
     <string-array name="nav_drawer_list_items">
-        <item>Scan around</item>
-        <item>Yours</item>
-        <item>Saved</item>
+        <item>Scan for Proxivents</item>
+        <item>Your Proxivents</item>
+        <item>Joined/Others</item>
         <item>Settings</item>
         <item>Logout</item>
     </string-array>
@@ -53,8 +55,8 @@
     <string-array name="nav_drawer_list_images">
         <item>ic_search_white_24dp</item>
         <item>ic_bluetooth_searching_white_24dp</item>
-        <item>ic_bluetooth_searching_white_24dp</item>
+        <item>ic_event_white_24dp</item>
         <item>ic_settings_white_24dp</item>
-        <item>ic_bluetooth_searching_white_24dp</item>
+        <item>ic_arrow_back_white_24dp</item>
     </string-array>
 </resources>

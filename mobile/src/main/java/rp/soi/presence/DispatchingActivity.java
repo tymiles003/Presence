@@ -35,6 +35,7 @@ public class DispatchingActivity extends Activity {
                 proxivent.put("major", 0);
                 proxivent.put("minor", 0);
                 proxivent.put("status", "inactive");
+                proxivent.pinInBackground();
                 proxivent.saveInBackground();
             }
 

@@ -3,7 +3,9 @@ package rp.soi.presence;
 
 import android.app.Activity;
 import android.app.FragmentManager;
+import android.app.ProgressDialog;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.content.res.Configuration;
 import android.app.FragmentTransaction;
 import android.os.Bundle;
@@ -23,6 +25,7 @@ import android.widget.TextView;
 
 import com.facebook.login.LoginManager;
 import com.parse.FindCallback;
+import com.parse.LogOutCallback;
 import com.parse.ParseException;
 import com.parse.ParseObject;
 import com.parse.ParseQuery;
@@ -47,6 +50,13 @@ public class MainNavDrawerActivity extends Activity {
     private FragmentTransaction transaction;
     private OwnProxiventsFragment ownProxiventsFragment;
     private FragmentManager fragmentManager;
+    public SharedPreferences sharedPreferences;
+
+    @Override
+    protected void onStart() {
+        super.onStart();
+        sharedPreferences = getSharedPreferences("PRESENCE_STORE",0);
+    }
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -80,7 +90,7 @@ public class MainNavDrawerActivity extends Activity {
                 String selectedListItemStr = (String) tv.getText();
 
                 //load own proxivents fragment
-                if(selectedListItemStr.equalsIgnoreCase("Yours")){
+                if(selectedListItemStr.equalsIgnoreCase("Your Proxivents")){
                     ownProxiventsFragment = new OwnProxiventsFragment();
                     transaction = fragmentManager.beginTransaction();
                     transaction.replace(R.id.content_frame, ownProxiventsFragment);
@@ -91,11 +101,20 @@ public class MainNavDrawerActivity extends Activity {
 
                 // Logout
                 if (selectedListItemStr.equalsIgnoreCase("Logout")){
-                    ParseUser.logOut();
-                    LoginManager.getInstance().logOut();
-                    Intent intent = new Intent(MainNavDrawerActivity.this, DispatchingActivity.class);
-                    intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK | Intent.FLAG_ACTIVITY_NEW_TASK);
-                    startActivity(intent);
+                    final ProgressDialog dialog = new ProgressDialog(MainNavDrawerActivity.this);
+                    dialog.setMessage("Logging out of Presence...");
+                    dialog.show();
+                    ParseUser.logOutInBackground(new LogOutCallback() {
+                        @Override
+                        public void done(ParseException e) {
+                            LoginManager.getInstance().logOut();
+                            dialog.dismiss();
+                            Intent intent = new Intent(MainNavDrawerActivity.this, DispatchingActivity.class);
+                            intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK | Intent.FLAG_ACTIVITY_NEW_TASK);
+                            startActivity(intent);
+                        }
+                    });
+
                 }
             }
         });

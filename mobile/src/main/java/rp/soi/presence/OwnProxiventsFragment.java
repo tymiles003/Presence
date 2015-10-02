@@ -4,6 +4,7 @@ package rp.soi.presence;
 import android.app.Fragment;
 import android.app.FragmentManager;
 import android.app.ProgressDialog;
+import android.content.SharedPreferences;
 import android.os.Bundle;
 
 import android.support.v7.widget.LinearLayoutManager;
@@ -36,9 +37,7 @@ public class OwnProxiventsFragment extends Fragment {
     private String[] mDataset;
     private ProgressDialog dialog;
 
-
     private static final int DATASET_COUNT = 60;
-
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -73,7 +72,14 @@ public class OwnProxiventsFragment extends Fragment {
                 newProxivent.show(fragmentManager,"PRESENCE");
             }
         });
+
         return v;
+    }
+
+    @Override
+    public void onResume() {
+        super.onResume();
+        //initProxivents();
     }
 
     private void initDataset() {
@@ -94,14 +100,6 @@ public class OwnProxiventsFragment extends Fragment {
             @Override
             public void done(List<ParseObject> list, ParseException e) {
                 ownProxivents = (ArrayList) list;
-                if (e == null) {
-                    for (ParseObject proxivent : list) {
-                        Log.d("PRESENCE", "After ParseQuery: " + proxivent.getString("title"));
-                        //ownProxivents.add(proxivent);
-                    }
-                } else {
-                    e.printStackTrace();
-                }
                 dialog.dismiss();
                 adapter = new OwnProxiventsRecyclerViewAdapter(ownProxivents);
                 recyclerView.setAdapter(adapter);
