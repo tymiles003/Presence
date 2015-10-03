@@ -27,7 +27,6 @@ public class NavDrawerListAdapter extends ArrayAdapter<String> {
         this.navItems = navItems;
         this.navImages = navImages;
 
-
     }
 
     @Override

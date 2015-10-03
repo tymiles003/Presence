@@ -1,35 +1,40 @@
 package rp.soi.presence;
 
-import android.app.ProgressDialog;
+
+import android.app.Fragment;
+import android.app.FragmentManager;
+import android.app.FragmentTransaction;
 import android.content.Context;
-import android.support.v7.internal.view.menu.MenuBuilder;
-import android.support.v7.widget.ActionMenuPresenter;
-import android.support.v7.widget.CardView;
+import android.content.Intent;
+import android.os.Bundle;
+import android.support.annotation.NonNull;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
 import android.util.Log;
 import android.view.LayoutInflater;
-import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageButton;
 import android.widget.TextView;
 
-import com.parse.FindCallback;
+import com.parse.Parse;
 import com.parse.ParseException;
 import com.parse.ParseObject;
-import com.parse.ParseQuery;
-import com.parse.ParseUser;
+import com.parse.SaveCallback;
 
+import java.io.FileDescriptor;
+import java.io.PrintWriter;
+import java.io.Serializable;
 import java.util.ArrayList;
-import java.util.List;
 
 /**
  * Created by geraldlim on 26/9/15.
  */
-public class OwnProxiventsRecyclerViewAdapter extends RecyclerView.Adapter<OwnProxiventsRecyclerViewAdapter.ViewHolder>{
+public class OwnProxiventsRecyclerViewAdapter extends RecyclerView.Adapter<OwnProxiventsRecyclerViewAdapter.ViewHolder> {
     private String[] mDataset;
     private ArrayList<ParseObject> ownProxivents = new ArrayList<ParseObject>();
+    private ViewGroup parent;
+    private Intent intent;
 
 
     // Provide a reference to the views for each data item
@@ -37,36 +42,41 @@ public class OwnProxiventsRecyclerViewAdapter extends RecyclerView.Adapter<OwnPr
     // you provide access to all the views for a data item in a view holder
     public static class ViewHolder extends RecyclerView.ViewHolder {
         // each data item is just a string in this case
+        private final View view;
         private final TextView textView;
         private final Toolbar toolbar;
-        private final ImageButton imageButton;
+
+
+        //private final ImageButton imageButton;
 
 
         public ViewHolder(View v) {
             super(v);
-            textView = (TextView)v.findViewById(R.id.title_proxivent_card);
+            textView = (TextView) v.findViewById(R.id.title_proxivent_card);
             toolbar = (Toolbar) v.findViewById(R.id.card_toolbar);
-            imageButton = (ImageButton) v.findViewById(R.id.btn_cardview_menu);
+            view = v;
+            //imageButton = (ImageButton) v.findViewById(R.id.btn_cardview_menu);
 
-            v.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View view) {
-                    Log.d("PRESENCE", "Cardview at position " + getPosition() + " clicked");
-                }
-            });
 
         }
 
-        public TextView getProxiventTitleTextView(){ return textView; }
+        public View getView() {
+            return view;
+        }
 
-        public Toolbar getToolbar(){ return toolbar; }
+        public TextView getProxiventTitleTextView() {
+            return textView;
+        }
 
-        public ImageButton getImageButton(){ return imageButton; }
+        public Toolbar getToolbar() {
+            return toolbar;
+        }
+
+        //public ImageButton getImageButton(){ return imageButton; }
     }
 
 
     // Provide a suitable constructor (depends on the kind of dataset)
-
 
 
     public OwnProxiventsRecyclerViewAdapter(String[] myDataset) {
@@ -74,7 +84,7 @@ public class OwnProxiventsRecyclerViewAdapter extends RecyclerView.Adapter<OwnPr
     }
 
     public OwnProxiventsRecyclerViewAdapter(ArrayList<ParseObject> myDataset) {
-        ownProxivents = myDataset;
+        this.ownProxivents = myDataset;
 
     }
 
@@ -82,34 +92,54 @@ public class OwnProxiventsRecyclerViewAdapter extends RecyclerView.Adapter<OwnPr
     @Override
     public ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
         // create a new view
-        View v = LayoutInflater.from(parent.getContext()).inflate(R.layout.layout_proxivent_cardview, parent, false);
-
+        this.parent = parent;
+        View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.layout_proxivent_cardview, parent, false);
         // set the view's size, margins, paddings and layout parameters
-        ViewHolder viewHolder = new ViewHolder(v);
+        ViewHolder viewHolder = new ViewHolder(view);
+
         return viewHolder;
     }
 
 
     // Replace the contents of a view (invoked by the layout manager)
     @Override
-    public void onBindViewHolder(ViewHolder holder, final int position) {
+    public void onBindViewHolder(final ViewHolder holder, final int position) {
         // - get element from your dataset at this position
         // - replace the contents of the view with that element
         //holder.mTextView.setText(mDataset[position]);
         //holder.getProxiventTitleTextView().setText(mDataset[position]);
+        ParseObject proxivent = ownProxivents.get(position);
 
-        String title = ownProxivents.get(position).getString("title");
+        String title = proxivent.getString("title");
         //Log.d("PRESENCE","onBindViewHolder: " + title);
-        holder.getToolbar().setTitle(ownProxivents.get(position).getString("status"));
+        String status = proxivent.getString("status");
+        if (status.equalsIgnoreCase("inactive")) {
+            holder.getToolbar().setTitleTextColor(0xFFFF1816);
+        } else {
+            holder.getToolbar().setTitleTextColor(0xFF27FF1E);
+        }
+        holder.getToolbar().setTitle(status);
         holder.getProxiventTitleTextView().setText(title);
 
-        holder.getImageButton().setOnClickListener(new View.OnClickListener() {
+        /*holder.getImageButton().setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 Log.d("PRESENCE", "Cardview menu button clicked at position " + position);
             }
-        });
+        });*/
+        holder.getView().setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
 
+
+                Log.d("PRESENCE", "Cardview at position " + position + " clicked");
+                intent = new Intent(view.getContext(), ProxiventDetailsActivity.class);
+                intent.putExtra("ProxiventId", ownProxivents.get(position).getObjectId());
+                Log.d("PRESENCE", "Selected proxivent at position " + position + " has ID: " + ownProxivents.get(position).getObjectId());
+                parent.getContext().startActivity(intent);
+
+            }
+        });
 
 
     }

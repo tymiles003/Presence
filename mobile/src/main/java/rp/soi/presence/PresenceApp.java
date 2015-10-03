@@ -25,7 +25,7 @@ import java.util.Collection;
 public class PresenceApp  extends android.app.Application implements BootstrapNotifier, BeaconConsumer{
 
     protected static final String TAG ="PRESENCE";
-    BeaconManager beaconManager;
+    public BeaconManager beaconManager;
     private RegionBootstrap regionBootstrap;
 
     public PresenceApp() {

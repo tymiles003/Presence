@@ -11,8 +11,10 @@ import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
 import android.view.LayoutInflater;
+import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.FrameLayout;
 import android.widget.ImageButton;
 
 import com.parse.FindCallback;
@@ -36,6 +38,7 @@ public class OwnProxiventsFragment extends Fragment {
     private ArrayList<ParseObject> ownProxivents = new ArrayList<ParseObject>();
     private String[] mDataset;
     private ProgressDialog dialog;
+    private FragmentManager fragmentManager;
 
     private static final int DATASET_COUNT = 60;
 
@@ -68,10 +71,11 @@ public class OwnProxiventsFragment extends Fragment {
             @Override
             public void onClick(View view) {
                 CreateProxiventFragment newProxivent = new CreateProxiventFragment();
-                FragmentManager fragmentManager = getFragmentManager();
-                newProxivent.show(fragmentManager,"PRESENCE");
+                fragmentManager = getFragmentManager();
+                newProxivent.show(fragmentManager, "PRESENCE");
             }
         });
+
 
         return v;
     }

@@ -59,4 +59,8 @@
         <item>ic_settings_white_24dp</item>
         <item>ic_arrow_back_white_24dp</item>
     </string-array>
+
+<!-- TODO: Remove or change this placeholder text -->
+    <string name="hello_blank_fragment">Hello blank fragment</string>
+    <string name="title_activity_proxivent_details">ProxiventDetailsActivity</string>
 </resources>

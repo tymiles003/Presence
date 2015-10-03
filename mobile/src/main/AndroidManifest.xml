@@ -29,7 +29,9 @@
         android:icon="@mipmap/ic_launcher"
         android:label="@string/app_name"
         android:theme="@style/AppTheme" >
-        <meta-data android:name="com.facebook.sdk.ApplicationId" android:value="@string/facebook_app_id"/>
+        <meta-data
+            android:name="com.facebook.sdk.ApplicationId"
+            android:value="@string/facebook_app_id" />
 
         <activity
             android:name=".MainActivity"
@@ -45,7 +47,7 @@
         </activity>
         <activity
             android:name=".WelcomeActivity"
-            android:label="@string/title_activity_welcome">
+            android:label="@string/title_activity_welcome" >
         </activity>
         <activity
             android:name=".LoginActivity"
@@ -68,14 +70,16 @@
         <activity
             android:name=".MainNavDrawerActivity"
             android:label="@string/title_activity_main_nav_drawer" >
-
         </activity>
-
-        <activity android:name="com.facebook.FacebookActivity"
-            android:configChanges=
-                "keyboard|keyboardHidden|screenLayout|screenSize|orientation"
-            android:theme="@android:style/Theme.Translucent.NoTitleBar"
-            android:label="@string/app_name" />
+        <activity
+            android:name="com.facebook.FacebookActivity"
+            android:configChanges="keyboard|keyboardHidden|screenLayout|screenSize|orientation"
+            android:label="@string/app_name"
+            android:theme="@android:style/Theme.Translucent.NoTitleBar" />
+        <activity
+            android:name=".ProxiventDetailsActivity"
+            android:label="@string/app_name" >
+        </activity>
     </application>
 
 </manifest>
