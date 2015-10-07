@@ -1,30 +1,16 @@
 package rp.soi.presence;
 
 
-import android.app.Fragment;
-import android.app.FragmentManager;
-import android.app.FragmentTransaction;
-import android.content.Context;
+
 import android.content.Intent;
-import android.os.Bundle;
-import android.support.annotation.NonNull;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.ImageButton;
 import android.widget.TextView;
-
-import com.parse.Parse;
-import com.parse.ParseException;
 import com.parse.ParseObject;
-import com.parse.SaveCallback;
-
-import java.io.FileDescriptor;
-import java.io.PrintWriter;
-import java.io.Serializable;
 import java.util.ArrayList;
 
 /**
@@ -114,9 +100,9 @@ public class OwnProxiventsRecyclerViewAdapter extends RecyclerView.Adapter<OwnPr
         //Log.d("PRESENCE","onBindViewHolder: " + title);
         String status = proxivent.getString("status");
         if (status.equalsIgnoreCase("inactive")) {
-            holder.getToolbar().setTitleTextColor(0xFFFF1816);
+            holder.getToolbar().setTitleTextColor(0xFFFF1816); //red
         } else {
-            holder.getToolbar().setTitleTextColor(0xFF27FF1E);
+            holder.getToolbar().setTitleTextColor(0xFF27FF1E); //green
         }
         holder.getToolbar().setTitle(status);
         holder.getProxiventTitleTextView().setText(title);
@@ -130,7 +116,6 @@ public class OwnProxiventsRecyclerViewAdapter extends RecyclerView.Adapter<OwnPr
         holder.getView().setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-
 
                 Log.d("PRESENCE", "Cardview at position " + position + " clicked");
                 intent = new Intent(view.getContext(), ProxiventDetailsActivity.class);

@@ -39,7 +39,7 @@ public class CreateProxiventFragment extends DialogFragment {
         fragmentManager = getFragmentManager();
         AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
         LayoutInflater inflater = getActivity().getLayoutInflater();
-        view = inflater.inflate(R.layout.new_proxevent_layout, null);
+        view = inflater.inflate(R.layout.new_proxivent_layout, null);
         builder.setView(view)
                 .setMessage("Create a Proxevent")
                 .setPositiveButton("Create", new DialogInterface.OnClickListener() {

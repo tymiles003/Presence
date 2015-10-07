@@ -1,11 +1,15 @@
 <menu xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
-    tools:context="rp.soi.presence.ProxiventDetailsActivity">
+    tools:context="rp.soi.presence.ProxiventActivity">
     <item
         android:id="@+id/action_edit_proxivent"
         android:title="Edit"
         android:icon="@drawable/ic_mode_edit_black_24dp"
         android:showAsAction="always" />
-
+    <!--<item
+        android:id="@+id/action_delete_proxivent"
+        android:title="Delete"
+        android:icon="@drawable/ic_delete_black_24dp"
+        android:showAsAction="always" />-->
 </menu>

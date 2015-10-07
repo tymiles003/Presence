@@ -3,13 +3,14 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical"
-    tools:context="rp.soi.presence.OwnProxiventsFragment">
+    tools:context="rp.soi.presence.NearbyProxiventsFragment">
 
-    <TextView
+
+<TextView
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:textAppearance="?android:attr/textAppearanceMedium"
-        android:text="@string/own_proxivents"
+        android:text="@string/nearby_proxivents"
         android:gravity="center_horizontal"
         android:textStyle="bold"
         android:padding="10dp" />
@@ -21,23 +22,13 @@
         android:layout_height="match_parent">
 
         <android.support.v7.widget.RecyclerView
-            android:id="@+id/recyclerview_own_proxivents"
+            android:id="@+id/recyclerview_nearby_proxivents"
             android:layout_width="match_parent"
             android:layout_height="match_parent" />
 
-        <ImageButton
-            android:layout_width="@dimen/fab_size"
-            android:layout_height="@dimen/fab_size"
-            android:id="@+id/button_add_new_proxivent"
-            android:background="@drawable/ripple"
-            android:src="@mipmap/ic_add_white_24dp"
-            android:layout_marginRight="@dimen/activity_horizontal_margin"
-            android:layout_marginBottom="@dimen/activity_vertical_margin"
-            android:layout_gravity="right|bottom"
-            android:stateListAnimator="@drawable/anim"
-            android:elevation="@dimen/button_elevation" />
 
     </FrameLayout>
 
 </LinearLayout>
+
 

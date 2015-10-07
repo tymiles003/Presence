@@ -108,7 +108,7 @@ public class SignUpActivity extends Activity {
         user.setEmail(email);
         user.setUsername(email);
         user.setPassword(password);
-        user.put("screenName",username);
+        user.put("screenName", username);
 
         // Call the Parse signup method
         user.signUpInBackground(new SignUpCallback() {

@@ -37,11 +37,10 @@
 
 <!-- TODO: Remove or change this placeholder text -->
     <string name="own_proxivents">Your own Proxivents</string>
+    <string name="nearby_proxivents">Nearby Proxivents</string>
     <string name="text_multi_line">The quick brown fox\njumps over the lazy dog\nand crawl under the truck.</string>
     <string name="sample_proxivent_title">Welcome to the Presence Proxivent!</string>
-    <string name="sample_proxivent_description">This is a sample proxivent(short for proximity event).\n
-        Go ahead! Click the \'+\' button to create a new one yourself.\n
-        Then press the \"START\" button to invite people nearby to join your proxivent!\nEnjoy!</string>
+    <string name="sample_proxivent_description">This is a sample proxivent(short for proximity event).\nGo ahead! Click the \'+\' button to create a new one yourself.\nThen press the \"START\" button to invite people nearby to join your proxivent!\nEnjoy!</string>
 
 
     <string-array name="nav_drawer_list_items">
@@ -63,4 +62,6 @@
 <!-- TODO: Remove or change this placeholder text -->
     <string name="hello_blank_fragment">Hello blank fragment</string>
     <string name="title_activity_proxivent_details">ProxiventDetailsActivity</string>
+    <string name="title_activity_proxivent">ProxiventActivity</string>
+    <string name="title_activity_proxivent_edit">ProxiventEditActivity</string>
 </resources>

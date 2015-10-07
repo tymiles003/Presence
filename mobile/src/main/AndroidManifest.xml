@@ -42,10 +42,6 @@
             android:label="@string/title_activity_beacon_detect" >
         </activity>
         <activity
-            android:name=".ProxeventsListActivity"
-            android:label="@string/title_activity_proxevents_list" >
-        </activity>
-        <activity
             android:name=".WelcomeActivity"
             android:label="@string/title_activity_welcome" >
         </activity>
@@ -78,6 +74,16 @@
             android:theme="@android:style/Theme.Translucent.NoTitleBar" />
         <activity
             android:name=".ProxiventDetailsActivity"
+            android:label="@string/app_name" >
+        </activity>
+
+        <service
+            android:name=".PresenceIntentService"
+            android:exported="false" >
+        </service>
+
+        <activity
+            android:name=".ProxiventEditActivity"
             android:label="@string/app_name" >
         </activity>
     </application>

@@ -8,6 +8,7 @@ import android.content.Intent;
 import android.content.SharedPreferences;
 import android.content.res.Configuration;
 import android.app.FragmentTransaction;
+import android.nfc.Tag;
 import android.os.Bundle;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBarDrawerToggle;
@@ -36,6 +37,7 @@ import java.util.List;
 
 public class MainNavDrawerActivity extends Activity {
 
+    protected static final String TAG = "PRESENCE";
     private String[] navDrawerItems;
     private String[] navDrawerImages;
 
@@ -48,9 +50,13 @@ public class MainNavDrawerActivity extends Activity {
     private CharSequence mTitle;
     private String mScreenName;
     private FragmentTransaction transaction;
-    private OwnProxiventsFragment ownProxiventsFragment;
     private FragmentManager fragmentManager;
     public SharedPreferences sharedPreferences;
+    private OwnProxiventsFragment ownProxiventsFragment;
+    private NearbyProxiventsFragment nearbyProxiventsFragment;
+    private JoinedProxiventsFragment joinedProxiventsFragment;
+    private String currentFragment="OwnProxiventsFragment";
+
 
     @Override
     protected void onStart() {
@@ -62,6 +68,11 @@ public class MainNavDrawerActivity extends Activity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main_nav_drawer);
+
+        if(ParseUser.getCurrentUser() == null){
+
+        }
+
         fragmentManager = getFragmentManager();
         /*if (savedInstanceState == null) {
             OwnProxiventsFragment fragment = new OwnProxiventsFragment();
@@ -89,35 +100,25 @@ public class MainNavDrawerActivity extends Activity {
                 TextView tv = (TextView)view.findViewById(R.id.title);
                 String selectedListItemStr = (String) tv.getText();
 
+                //Scan around item selected
+                if(selectedListItemStr.equalsIgnoreCase("Scan for Proxivents")){
+                    loadNearbyProxiventsFragment();
+                }
                 //load own proxivents fragment
                 if(selectedListItemStr.equalsIgnoreCase("Your Proxivents")){
-                    ownProxiventsFragment = new OwnProxiventsFragment();
-                    transaction = fragmentManager.beginTransaction();
-                    transaction.replace(R.id.content_frame, ownProxiventsFragment);
-                    transaction.commit();
-                    mDrawerLayout.closeDrawer(Gravity.LEFT);
+                    loadOwnProxiventsFragment();
                 }
-
-
+                //Scan arou item selected
+                if(selectedListItemStr.equalsIgnoreCase("Joined/Others")){
+                    loadJoinedProxiventsFragment();
+                }
                 // Logout
                 if (selectedListItemStr.equalsIgnoreCase("Logout")){
-                    final ProgressDialog dialog = new ProgressDialog(MainNavDrawerActivity.this);
-                    dialog.setMessage("Logging out of Presence...");
-                    dialog.show();
-                    ParseUser.logOutInBackground(new LogOutCallback() {
-                        @Override
-                        public void done(ParseException e) {
-                            LoginManager.getInstance().logOut();
-                            dialog.dismiss();
-                            Intent intent = new Intent(MainNavDrawerActivity.this, DispatchingActivity.class);
-                            intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK | Intent.FLAG_ACTIVITY_NEW_TASK);
-                            startActivity(intent);
-                        }
-                    });
-
+                    logOut();
                 }
             }
         });
+
         mTitle = mDrawerTitle = getTitle();
         mDrawerLayout = (DrawerLayout) findViewById(R.id.drawer_layout);
         mDrawerToggle = new ActionBarDrawerToggle(this, mDrawerLayout,R.string.drawer_open, R.string.drawer_close){
@@ -141,6 +142,16 @@ public class MainNavDrawerActivity extends Activity {
         mDrawerLayout.setDrawerListener(mDrawerToggle);
         getActionBar().setDisplayHomeAsUpEnabled(true);
         getActionBar().setHomeButtonEnabled(true);
+
+        Intent i = getIntent();
+        if(i.getStringExtra("fragment").equals("OwnProxiventsFragment")){
+            loadOwnProxiventsFragment();
+        }
+        if(i.getStringExtra("fragment").equals("NearbyProxiventsFragment")){
+            loadNearbyProxiventsFragment();
+        }
+
+
     }
 
     @Override
@@ -172,6 +183,19 @@ public class MainNavDrawerActivity extends Activity {
         // as you specify a parent activity in AndroidManifest.xml.
         int id = item.getItemId();
 
+        if(id == R.id.action_refresh){
+            Log.d(TAG, "Refresh menu icon clicked: " + currentFragment);
+            if(currentFragment.equalsIgnoreCase("NearbyProxiventsFragment")){
+                loadNearbyProxiventsFragment();
+            }
+            if(currentFragment.equalsIgnoreCase("OwnProxiventsFragment")){
+                loadOwnProxiventsFragment();
+            }
+            if(currentFragment.equalsIgnoreCase("JoinedProxiventsFragment")){
+                loadJoinedProxiventsFragment();
+            }
+        }
+
         if (mDrawerToggle.onOptionsItemSelected(item)) {
             return true;
         }
@@ -186,6 +210,49 @@ public class MainNavDrawerActivity extends Activity {
         menu.setGroupVisible(0,!drawerOpen);
         //menu.findItem(R.id.action_settings).setVisible(!drawerOpen);
         return super.onPrepareOptionsMenu(menu);
+    }
+
+    private void loadOwnProxiventsFragment(){
+        currentFragment="OwnProxiventsFragment";
+        ownProxiventsFragment = new OwnProxiventsFragment();
+        transaction = fragmentManager.beginTransaction();
+        transaction.replace(R.id.content_frame, ownProxiventsFragment);
+        transaction.commit();
+        mDrawerLayout.closeDrawer(Gravity.LEFT);
+    }
+
+    private void loadNearbyProxiventsFragment(){
+        currentFragment="NearbyProxiventsFragment";
+        nearbyProxiventsFragment = new NearbyProxiventsFragment();
+        transaction = fragmentManager.beginTransaction();
+        transaction.replace(R.id.content_frame, nearbyProxiventsFragment);
+        transaction.commit();
+        mDrawerLayout.closeDrawer(Gravity.LEFT);
+    }
+
+    private void loadJoinedProxiventsFragment(){
+        currentFragment="JoinedProxiventsFragment";
+        joinedProxiventsFragment = new JoinedProxiventsFragment();
+        transaction = fragmentManager.beginTransaction();
+        transaction.replace(R.id.content_frame, joinedProxiventsFragment);
+        transaction.commit();
+        mDrawerLayout.closeDrawer(Gravity.LEFT);
+    }
+
+    public void logOut(){
+        final ProgressDialog dialog = new ProgressDialog(MainNavDrawerActivity.this);
+        dialog.setMessage("Logging out of Presence...");
+        dialog.show();
+        ParseUser.logOutInBackground(new LogOutCallback() {
+            @Override
+            public void done(ParseException e) {
+                LoginManager.getInstance().logOut();
+                dialog.dismiss();
+                Intent intent = new Intent(MainNavDrawerActivity.this, DispatchingActivity.class);
+                intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK | Intent.FLAG_ACTIVITY_NEW_TASK);
+                startActivity(intent);
+            }
+        });
     }
 
 

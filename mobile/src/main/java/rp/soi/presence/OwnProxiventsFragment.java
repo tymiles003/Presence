@@ -46,7 +46,6 @@ public class OwnProxiventsFragment extends Fragment {
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         //initDataset();
-        initProxivents();
     }
 
     @Override
@@ -59,7 +58,7 @@ public class OwnProxiventsFragment extends Fragment {
         // use a linear layout manager
         layoutManager = new LinearLayoutManager(getActivity());
         recyclerView.setLayoutManager(layoutManager);
-
+        Log.d("PRESENCE", "OnCreateView()");
         // specify an adapter (see also next example)
         //adapter = new OwnProxiventsRecyclerViewAdapter(mDataset);
         //adapter = new OwnProxiventsRecyclerViewAdapter(ownProxivents);
@@ -83,6 +82,9 @@ public class OwnProxiventsFragment extends Fragment {
     @Override
     public void onResume() {
         super.onResume();
+        initProxivents();
+        Log.d("PRESENCE", "OnResume()");
+
         //initProxivents();
     }
 
@@ -97,14 +99,14 @@ public class OwnProxiventsFragment extends Fragment {
 
         ParseQuery<ParseObject> query = ParseQuery.getQuery("Proxivent");
         query.whereEqualTo("owner", ParseUser.getCurrentUser());
-        dialog = new ProgressDialog(getActivity());
+        /*dialog = new ProgressDialog(getActivity());
         dialog.setMessage("Retrieving your proxivents...");
-        dialog.show();
+        dialog.show();*/
         query.findInBackground(new FindCallback<ParseObject>() {
             @Override
             public void done(List<ParseObject> list, ParseException e) {
                 ownProxivents = (ArrayList) list;
-                dialog.dismiss();
+                //dialog.dismiss();
                 adapter = new OwnProxiventsRecyclerViewAdapter(ownProxivents);
                 recyclerView.setAdapter(adapter);
             }
