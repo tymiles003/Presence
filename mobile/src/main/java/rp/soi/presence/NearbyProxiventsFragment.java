@@ -43,7 +43,7 @@ import java.util.List;
 /**
  * A simple {@link Fragment} subclass.
  */
-public class NearbyProxiventsFragment extends Fragment implements BeaconConsumer {
+public class NearbyProxiventsFragment extends Fragment {
 
     protected static final String TAG = "PRESENCE";
     private RecyclerView recyclerView;
@@ -75,11 +75,7 @@ public class NearbyProxiventsFragment extends Fragment implements BeaconConsumer
         layoutManager = new LinearLayoutManager(getActivity());
         recyclerView.setLayoutManager(layoutManager);
 
-        beaconManager = BeaconManager.getInstanceForApplication(getApplicationContext());
-        beaconManager.getBeaconParsers().add(new BeaconParser().setBeaconLayout("m:2-3=0215,i:4-19,i:20-21,i:22-23,p:24-24,d:25-25"));
-        beaconManager.setBackgroundScanPeriod(3000);
-        beaconManager.setBackgroundBetweenScanPeriod(57000);
-        //beaconManager.bind(this);
+
         return v;
     }
 
@@ -92,107 +88,23 @@ public class NearbyProxiventsFragment extends Fragment implements BeaconConsumer
     @Override
     public void onResume() {
         super.onResume();
-        //initProxivents();
         Log.d("PRESENCE", "OnResume()");
+        //retrieveNearbyProxiventsFromLocalStore();
+        getNearProxiventsFromPresenceApp();
+        adapter = new NearbyProxiventsRecyclerViewAdapter(nearbyProxivents);
+        recyclerView.setAdapter(adapter);
 
     }
 
+    private void getNearProxiventsFromPresenceApp() {
+        nearbyProxivents = PresenceApp.getNearbyProxivents();
+        Log.d(TAG, "NearbyProxiventsFragment: nearbyProxivents size: " + nearbyProxivents.size());
+        for(ParseObject p : nearbyProxivents){
+            Log.d(TAG, "NearbyProxiventsFragment: nearbyProxivents distance: " + p.getDouble("distance"));
 
-    private void initProxivents() {
-        ParseQuery<ParseObject> query = ParseQuery.getQuery("Proxivent");
-        query.whereEqualTo("owner", ParseUser.getCurrentUser());
-        dialog = new ProgressDialog(getActivity());
-        dialog.setMessage("Retrieving your proxivents...");
-        dialog.show();
-        query.findInBackground(new FindCallback<ParseObject>() {
-            @Override
-            public void done(List<ParseObject> list, ParseException e) {
-                nearbyProxivents = (ArrayList) list;
-                dialog.dismiss();
-                adapter = new OwnProxiventsRecyclerViewAdapter(nearbyProxivents);
-                recyclerView.setAdapter(adapter);
-            }
-        });
-    }
-
-    @Override
-    public void onBeaconServiceConnect() {
-
-        beaconManager.setRangeNotifier(new RangeNotifier() {
-            @Override
-            public void didRangeBeaconsInRegion(Collection<Beacon> beacons, Region region) {
-                Log.d(TAG, "In Nearby: didRangeBeaconsInRegion");
-                if (didExit && beacons.size() == 0) {
-                    nearbyProxivents.clear();
-                }
-
-                if (((didEnter && beacons.size() > 0))) {
-                    nearbyProxivents.clear();
-                    for (Beacon beacon : beacons) {
-                        Log.d(TAG, "iBeacons " + String.format("%.1f", beacon.getDistance()) + " meters away.");
-                        ParseQuery<ParseObject> parseQuery = ParseQuery.getQuery("Proxivent");
-                        parseQuery.whereEqualTo("uuid", beacon.getId1().toString());
-                        parseQuery.whereEqualTo("major", beacon.getId2().toInt());
-                        parseQuery.whereEqualTo("minor", beacon.getId3().toInt());
-                        parseQuery.whereEqualTo("status", "active");
-                        parseQuery.findInBackground(new FindCallback<ParseObject>() {
-                            @Override
-                            public void done(List<ParseObject> list, ParseException e) {
-                                if (list.size() > 0) {
-                                    nearbyProxivents.add(list.get(0));
-                                }
-                            }
-                        });
-                    }
-                }
-                adapter = new NearbyProxiventsRecyclerViewAdapter(nearbyProxivents);
-                recyclerView.setAdapter(adapter);
-                didExit = false;
-                didEnter = false;
-            }
-
-        });
-        try {
-            beaconManager.startRangingBeaconsInRegion(new Region("myRangingUniqueId", null, null, null));
-        } catch (RemoteException e) {
-            e.printStackTrace();
         }
-
-
-        beaconManager.setMonitorNotifier(new MonitorNotifier() {
-            @Override
-            public void didEnterRegion(Region region) {
-                Log.d(TAG, "In Nearby: didEnterRegion");
-                didEnter = true;
-            }
-
-            @Override
-            public void didExitRegion(Region region) {
-                Log.d(TAG, "In Nearby: didExitRegion");
-                didExit = true;
-            }
-
-            @Override
-            public void didDetermineStateForRegion(int i, Region region) {
-                Log.d(TAG, "In Nearby: didDetermineStateForRegion" + i);
-
-            }
-        });
     }
 
-    @Override
-    public Context getApplicationContext() {
-        return null;
-    }
 
-    @Override
-    public void unbindService(ServiceConnection serviceConnection) {
-
-    }
-
-    @Override
-    public boolean bindService(Intent intent, ServiceConnection serviceConnection, int i) {
-        return false;
-    }
 }
 

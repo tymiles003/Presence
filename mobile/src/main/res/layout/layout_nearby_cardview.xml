@@ -75,7 +75,8 @@
                     android:textAppearance="?android:attr/textAppearanceSmall"
                     android:id="@+id/textView_proxivent_owner_name"
                     android:hint="Name"
-                    android:layout_marginLeft="10dp" />
+                    android:layout_marginLeft="10dp"
+                    android:textStyle="bold|italic" />
 
             </LinearLayout>
 

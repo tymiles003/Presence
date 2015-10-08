@@ -25,6 +25,7 @@ import com.parse.ParseInstallation;
 import com.parse.ParseObject;
 import com.parse.ParseQuery;
 import com.parse.PushService;
+import com.parse.SaveCallback;
 
 import org.altbeacon.beacon.Beacon;
 import org.altbeacon.beacon.BeaconConsumer;
@@ -57,11 +58,15 @@ public class PresenceApp extends android.app.Application implements BootstrapNot
     private ArrayList<Beacon> previousBeacons = new ArrayList<Beacon>();
     private Boolean newBeaconFound = false;
     private Boolean exists = false;
-    private ArrayList<Beacon> iBeacons = new ArrayList<Beacon>();
+    private static ArrayList<ParseObject> nearbyProxivents = new ArrayList<ParseObject>();
     private Beacon beacon;
     private Boolean needToLookUpProxivent = false;
     private Boolean needToUpDatePreviousBeacons = false;
     private Boolean hasProxivent = false;
+    private Boolean didEnter = false;
+    private Boolean didExit = false;
+    private Boolean proxiventFound=false;
+    private ParseObject p;
 
     public PresenceApp() {
     }
@@ -87,15 +92,26 @@ public class PresenceApp extends android.app.Application implements BootstrapNot
         regionBootstrap = new RegionBootstrap(this, region);
     }
 
+    public static ArrayList<ParseObject> getNearbyProxivents(){
+        return nearbyProxivents;
+    }
 
     @Override
     public void onBeaconServiceConnect() {
         beaconManager.setRangeNotifier(new RangeNotifier() {
-            /*@Override
+            @Override
             public void didRangeBeaconsInRegion(Collection<Beacon> beacons, Region region) {
-                if (needToUpDatePreviousBeacons) {
-                    hasProxivent=false;
-                    for (Beacon beacon : beacons) {
+                Log.d(TAG, "In Nearby: didRangeBeaconsInRegion");
+                if (didExit && beacons.size() == 0) {
+                    Log.d(TAG, "In Nearby: clearing nearbyProxivents");
+                    nearbyProxivents.clear();
+                }
+
+                if (didEnter && beacons.size() > 0) {
+                    Log.d(TAG, "In Nearby: clearing nearbyProxivents");
+                    nearbyProxivents.clear();
+                    proxiventFound = false;
+                    for (final Beacon beacon : beacons) {
                         Log.d(TAG, "iBeacons " + String.format("%.1f", beacon.getDistance()) + " meters away.");
                         ParseQuery<ParseObject> parseQuery = ParseQuery.getQuery("Proxivent");
                         parseQuery.whereEqualTo("uuid", beacon.getId1().toString());
@@ -105,24 +121,38 @@ public class PresenceApp extends android.app.Application implements BootstrapNot
                         parseQuery.findInBackground(new FindCallback<ParseObject>() {
                             @Override
                             public void done(List<ParseObject> list, ParseException e) {
-                                if(list.size() >0){
-                                    if(needToLookUpProxivent){
-                                        Log.d(TAG,"Send Notification");
-                                        displayAndroidWearNotification("Presence Detected Proxivents!", "Touch to open see more");
-                                    }
-                                    ParseObject proxivent = new ParseObject("neabyProxivent");
-                                    proxivent.put("proxiventObj", list.get(0));
-                                    proxivent.pinInBackground();
+                                if (list.size() > 0) {
+                                    proxiventFound=true;
+                                    p = list.get(0);
+                                    p.put("distance", beacon.getDistance());
+                                    p.pinInBackground(new SaveCallback() {
+                                        @Override
+                                        public void done(ParseException e) {
+                                            nearbyProxivents.add(p);
+
+                                        }
+                                    });
                                 }
                             }
                         });
                     }
-                }
-                //needToLookUpProxivent = false;
-                //needToUpDatePreviousBeacons = false;
-            }*/
 
-            @Override
+                }
+                if(proxiventFound){
+                    displayAndroidWearNotification("Presence Detected Proxivents!", "Touch to open see more");
+
+                }
+                Log.d(TAG, "In Nearby: resetting didEnter and didExit and proxiventFound");
+                didExit = false;
+                didEnter = false;
+                proxiventFound=false;
+                Log.d(TAG, "In Nearby: didEnter: " + didEnter);
+                Log.d(TAG, "In Nearby: didExit: " + didExit);
+                Log.d(TAG, "In Nearby: proxiventFound: " + proxiventFound);
+                Log.d(TAG, "In Nearby: nearbyProxivents size: " + nearbyProxivents.size());
+            }
+
+            /*@Override
             public void didRangeBeaconsInRegion(Collection<Beacon> beacons, Region region) {
 
                 if (needToLookUpProxivent && beacons.size() > 0) {
@@ -139,10 +169,10 @@ public class PresenceApp extends android.app.Application implements BootstrapNot
                 }
                 needToLookUpProxivent = false;
                 needToUpDatePreviousBeacons = false;
-                /*if (beacons.size() > 0) {
+                *//*if (beacons.size() > 0) {
                     Log.d(TAG, "RangeNotifier: didRangeBeaconsInRegion: Previous beacons size:" + previousBeacons.size() + " , Beacons size: " + beacons.size());
-                }*/
-            }
+                }*//*
+            }*/
         });
 
         try {
@@ -157,12 +187,14 @@ public class PresenceApp extends android.app.Application implements BootstrapNot
         Log.d(TAG, "BootrapNotifier: didEnterRegion");
         needToLookUpProxivent = true;
         needToUpDatePreviousBeacons = true;
+        didEnter=true;
     }
 
     @Override
     public void didExitRegion(Region region) {
         Log.d(TAG, "BootrapNotifier: didExitRegion");
         needToUpDatePreviousBeacons = true;
+        didExit=true;
     }
 
     @Override
@@ -171,7 +203,7 @@ public class PresenceApp extends android.app.Application implements BootstrapNot
         needToUpDatePreviousBeacons = true;
     }
 
-    public Boolean lookupProxivent(Beacon beacon) {
+    /*public Boolean lookupProxivent(Beacon beacon) {
 
         Log.d(TAG, "iBeacons " + String.format("%.1f", beacon.getDistance()) + " meters away.");
         ParseQuery<ParseObject> parseQuery = ParseQuery.getQuery("Proxivent");
@@ -194,7 +226,7 @@ public class PresenceApp extends android.app.Application implements BootstrapNot
 
         return exists;
     }
-
+*/
     /*public void checkForBluetooth() {
         //Check whether user has turn on bluetooth on device
         final BluetoothManager bluetoothManager = (BluetoothManager) getSystemService(Context.BLUETOOTH_SERVICE);

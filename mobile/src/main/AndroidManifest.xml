@@ -86,6 +86,10 @@
             android:name=".ProxiventEditActivity"
             android:label="@string/app_name" >
         </activity>
+        <activity
+            android:name=".NearbyProxiventDetailsActivity"
+            android:label="@string/app_name" >
+        </activity>
     </application>
 
 </manifest>
