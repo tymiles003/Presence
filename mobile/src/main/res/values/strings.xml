@@ -65,4 +65,5 @@
     <string name="title_activity_proxivent">ProxiventActivity</string>
     <string name="title_activity_proxivent_edit">ProxiventEditActivity</string>
     <string name="title_activity_nearby_proxivent_details">NearbyProxiventDetailsActivity</string>
+    <string name="title_activity_proxivent_participants">ProxiventParticipantsActivity</string>
 </resources>

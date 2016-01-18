@@ -82,11 +82,11 @@ public class PresenceApp extends android.app.Application implements BootstrapNot
         ParseFacebookUtils.initialize(this);
         // Specify an Activity to handle all pushes by default.
         //PushService.setDefaultPushCallback(this, MainActivity.class);
-        backgroundPowerSaver = new BackgroundPowerSaver(this);
+        //backgroundPowerSaver = new BackgroundPowerSaver(this);
         beaconManager = BeaconManager.getInstanceForApplication(this);
         beaconManager.getBeaconParsers().add(new BeaconParser().setBeaconLayout("m:2-3=0215,i:4-19,i:20-21,i:22-23,p:24-24,d:25-25"));
         beaconManager.setBackgroundScanPeriod(3000);
-        beaconManager.setBackgroundBetweenScanPeriod(57000);
+        beaconManager.setBackgroundBetweenScanPeriod(30000);
         beaconManager.bind(this);
         region = new Region("rp.soi.presence.DispatchingActivity", null, null, null);
         regionBootstrap = new RegionBootstrap(this, region);

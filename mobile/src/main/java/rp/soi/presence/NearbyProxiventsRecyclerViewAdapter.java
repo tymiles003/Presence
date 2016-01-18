@@ -93,7 +93,7 @@ public class NearbyProxiventsRecyclerViewAdapter extends RecyclerView.Adapter<Ne
 
         //Log.d("PRESENCE","onBindViewHolder: " + title);
         holder.getToolbar().setTitleTextColor(0xFFBB6008); //light blue
-        holder.getToolbar().setTitle("Distance: " + Double.toString(distance) + " away");
+        holder.getToolbar().setTitle("Distance: " + String.format("%.2f",distance) + " away");
         holder.getProxiventTitleTextView().setText(title);
         holder.getScreenNameTextView().setText(user.getString("screenName"));
 

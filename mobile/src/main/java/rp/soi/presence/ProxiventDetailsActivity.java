@@ -80,6 +80,9 @@ public class ProxiventDetailsActivity extends Activity {
         if (!bluetoothAdapter.isMultipleAdvertisementSupported()) {
             startStopButton.setEnabled(false);
         }
+        /*if(beaconTransmitter != null && beaconTransmitter.isStarted()){
+            startStopButton.setEnabled(false);
+        }*/
         startStopButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -104,6 +107,12 @@ public class ProxiventDetailsActivity extends Activity {
                 }
                 if (proxivent.getString("status").equalsIgnoreCase("inactive")) {
                     Log.d(TAG, "Inside inactive");
+                    if(beaconTransmitter!=null && beaconTransmitter.isStarted()){
+                        Log.i(TAG, "Reason: There's already a proxivent active.");
+                        Toast toast = Toast.makeText(getApplicationContext(), "Not started, there's another proxivent already in transmission", Toast.LENGTH_LONG);
+                        toast.show();
+                        return;
+                    }
                     //toggle to active and start beaconing
                     dialog = new ProgressDialog(ProxiventDetailsActivity.this);
                     dialog.setMessage("Turning ON beacon transmitter...");
@@ -163,7 +172,7 @@ public class ProxiventDetailsActivity extends Activity {
         tvUUID.setText(proxivent.getString("uuid"));
         tvMajor.setText(String.valueOf(proxivent.getInt("major")));
         tvMinor.setText(String.valueOf(proxivent.getInt("minor")));
-        if(startStopButton.isEnabled()){
+        if (startStopButton.isEnabled()) {
             if (proxivent.getString("status").equalsIgnoreCase("inactive")) {
                 startStopButton.setBackgroundColor(getResources().getColor(R.color.green));
                 startStopButton.setText("START ADVERTISEMENT");
@@ -193,6 +202,13 @@ public class ProxiventDetailsActivity extends Activity {
         //noinspection SimplifiableIfStatement
         if (id == R.id.action_edit_proxivent) {
             Intent intent = new Intent(this, ProxiventEditActivity.class);
+            intent.putExtra("ProxiventId", proxiventId);
+            intent.addFlags(Intent.FLAG_ACTIVITY_NO_HISTORY);
+            startActivity(intent);
+            return true;
+        }
+        if(id==R.id.action_show_participants){
+            Intent intent = new Intent(this, ProxiventParticipantsActivity.class);
             intent.putExtra("ProxiventId", proxiventId);
             intent.addFlags(Intent.FLAG_ACTIVITY_NO_HISTORY);
             startActivity(intent);

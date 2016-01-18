@@ -8,6 +8,7 @@ import android.os.Bundle;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.view.View;
 import android.widget.Button;
 import android.widget.TextView;
 
@@ -17,7 +18,10 @@ import com.parse.ParseException;
 import com.parse.ParseObject;
 import com.parse.ParseQuery;
 import com.parse.ParseUser;
+import com.parse.SaveCallback;
 
+import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 
 
@@ -52,6 +56,22 @@ public class NearbyProxiventDetailsActivity extends Activity {
         tvMinor = (TextView) findViewById(R.id.textView_proxivent_minor);
         participateButton = (Button) findViewById(R.id.button_proxivent_participate);
 
+        participateButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+
+                ParseUser user = ParseUser.getCurrentUser();
+                user.addUnique("participations",proxivent);
+                user.saveInBackground();
+                ParseObject participation = new ParseObject("Participation");
+                participation.put("participant", user);
+                participation.put("proxiventId", proxiventId);
+                participation.saveInBackground();
+                participateButton.setEnabled(false);
+                participateButton.setText("Participated");
+
+            }
+        });
 
     }
 
@@ -88,14 +108,29 @@ public class NearbyProxiventDetailsActivity extends Activity {
         tvUUID.setText(proxivent.getString("uuid"));
         tvMajor.setText(String.valueOf(proxivent.getInt("major")));
         tvMinor.setText(String.valueOf(proxivent.getInt("minor")));
-        ParseUser user = proxivent.getParseUser("owner");
+        ParseUser owner = proxivent.getParseUser("owner");
+        try {
+            owner.fetchIfNeeded();
+        }catch (ParseException e){
+            e.printStackTrace();
+        }
+        tvOwner.setText(owner.getString("screenName"));
+        //Participation button
+        ParseUser user = ParseUser.getCurrentUser();
+        ArrayList<ParseObject> participations = (ArrayList)user.get("participations");
         try {
             user.fetchIfNeeded();
         }catch (ParseException e){
             e.printStackTrace();
         }
-        tvOwner.setText(user.getString("screenName"));
-
+        if(participations==null || !participations.contains(proxivent)){
+            participateButton.setEnabled(true);
+            participateButton.setBackgroundColor(getResources().getColor(R.color.orangelight));
+        }else{
+            participateButton.setEnabled(false);
+            participateButton.setBackgroundColor(getResources().getColor(R.color.orangelight));
+            participateButton.setText("Participated");
+        }
 
     }
 

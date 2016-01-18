@@ -99,14 +99,14 @@ public class OwnProxiventsFragment extends Fragment {
 
         ParseQuery<ParseObject> query = ParseQuery.getQuery("Proxivent");
         query.whereEqualTo("owner", ParseUser.getCurrentUser());
-        /*dialog = new ProgressDialog(getActivity());
+        dialog = new ProgressDialog(getActivity());
         dialog.setMessage("Retrieving your proxivents...");
-        dialog.show();*/
+        dialog.show();
         query.findInBackground(new FindCallback<ParseObject>() {
             @Override
             public void done(List<ParseObject> list, ParseException e) {
                 ownProxivents = (ArrayList) list;
-                //dialog.dismiss();
+                dialog.dismiss();
                 adapter = new OwnProxiventsRecyclerViewAdapter(ownProxivents);
                 recyclerView.setAdapter(adapter);
             }

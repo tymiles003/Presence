@@ -3,9 +3,15 @@
     xmlns:tools="http://schemas.android.com/tools"
     tools:context="rp.soi.presence.ProxiventDetailsActivity">
     <item
+        android:id="@+id/action_show_participants"
+        android:title="Participants"
+        android:icon="@drawable/ic_people_black_24dp"
+        android:showAsAction="always" />
+    <item
         android:id="@+id/action_edit_proxivent"
         android:title="Edit"
         android:icon="@drawable/ic_mode_edit_black_24dp"
         android:showAsAction="always" />
+
 
 </menu>
