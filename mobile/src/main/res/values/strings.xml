@@ -37,6 +37,7 @@
 
 <!-- TODO: Remove or change this placeholder text -->
     <string name="own_proxivents">Your own Proxivents</string>
+    <string name="joined_proxivents">Your Participations</string>
     <string name="nearby_proxivents">Nearby Proxivents</string>
     <string name="text_multi_line">The quick brown fox\njumps over the lazy dog\nand crawl under the truck.</string>
     <string name="sample_proxivent_title">Welcome to the Presence Proxivent!</string>

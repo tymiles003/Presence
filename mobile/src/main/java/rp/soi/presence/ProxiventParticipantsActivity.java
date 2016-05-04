@@ -71,7 +71,7 @@ public class ProxiventParticipantsActivity extends Activity {
                     participants.add(user);
                     participantsNames.add(user.getString("screenName"));
                 }
-                arrayAdapter = new ArrayAdapter<String>(getBaseContext(),android.R.layout.simple_list_item_1, participantsNames);
+                arrayAdapter = new ArrayAdapter<String>(ProxiventParticipantsActivity.this,android.R.layout.simple_list_item_1, participantsNames);
                 lv.setAdapter(arrayAdapter);
                 dialog.dismiss();
             }

@@ -35,6 +35,7 @@ public class FBAuthFragment extends Fragment {
     private ProgressDialog dialog;
     private String email;
     private String uid;
+    private ParseUser currentUser;
 
     public FBAuthFragment() {
         // Required empty public constructor
@@ -74,6 +75,8 @@ public class FBAuthFragment extends Fragment {
                                     public void done(ParseUser parseUser, ParseException e) {
 
                                         if((parseUser!=null) && (parseUser.isNew())){
+
+                                            //currentUser = ParseUser.getCurrentUser();
                                             Profile profile = Profile.getCurrentProfile();
                                             if(profile != null){
                                                 Log.d("PRESENCE", "First Name: " + profile.getFirstName());
@@ -82,10 +85,12 @@ public class FBAuthFragment extends Fragment {
                                                 Log.d("PRESENCE", "Name: " + profile.getName());
                                                 Log.d("PRESENCE", "Email: " + email);
 
-                                                parseUser.put("email", email);
+                                                parseUser.setEmail(email);
                                                 parseUser.put("firstName", profile.getFirstName());
                                                 parseUser.put("lastName", profile.getLastName());
+                                                parseUser.put("isFBUser", true);
                                                 parseUser.put("screenName", profile.getFirstName() + " " + profile.getLastName().substring(0,1) + ".");
+                                                //parseUser.put("emailVerified", true);
                                                 parseUser.saveInBackground(new SaveCallback() {
                                                     @Override
                                                     public void done(ParseException e) {

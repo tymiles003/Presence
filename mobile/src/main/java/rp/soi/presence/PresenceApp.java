@@ -17,6 +17,7 @@ import android.view.View;
 import android.widget.Toast;
 
 import com.facebook.FacebookSdk;
+import com.firebase.client.Firebase;
 import com.parse.FindCallback;
 import com.parse.Parse;
 import com.parse.ParseException;
@@ -80,6 +81,7 @@ public class PresenceApp extends android.app.Application implements BootstrapNot
         Parse.initialize(this, "lyqZPUjNKWS49HhSDErMm9bmOS4Ky1IRv6sCTpjt", "xffTEpyindpwEYvEYkJ9G33gjRCHe3wjDKDwR9rZ");
         FacebookSdk.sdkInitialize(getApplicationContext());
         ParseFacebookUtils.initialize(this);
+        Firebase.setAndroidContext(this);
         // Specify an Activity to handle all pushes by default.
         //PushService.setDefaultPushCallback(this, MainActivity.class);
         //backgroundPowerSaver = new BackgroundPowerSaver(this);
@@ -123,6 +125,7 @@ public class PresenceApp extends android.app.Application implements BootstrapNot
                             public void done(List<ParseObject> list, ParseException e) {
                                 if (list.size() > 0) {
                                     proxiventFound=true;
+                                    displayAndroidWearNotification("Presence Detected Proxivents!", "Touch to open see more");
                                     p = list.get(0);
                                     p.put("distance", beacon.getDistance());
                                     p.pinInBackground(new SaveCallback() {

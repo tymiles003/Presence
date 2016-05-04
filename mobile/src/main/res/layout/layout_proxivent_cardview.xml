@@ -44,7 +44,6 @@
             <TextView
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-                android:text="@string/text_multi_line"
             android:id="@+id/title_proxivent_card"
                 android:textStyle="bold"
                 android:textAppearance="?android:attr/textAppearanceMedium"

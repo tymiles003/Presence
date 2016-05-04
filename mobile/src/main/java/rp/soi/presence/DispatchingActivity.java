@@ -42,44 +42,50 @@ public class DispatchingActivity extends Activity {
         //checkForBluetooth();
         // Check if there is current user info
 
-        if (ParseUser.getCurrentUser() != null && ParseUser.getCurrentUser().getBoolean("emailVerified")) {
-            // Associate Installation to userid
-            if (ParseUser.getCurrentUser().get("welcomeProxivent")==null) {
-                createWelcomeProxivent();
-            }
-
-            // Start an intent for the logged in activity
-            Intent previousIntent = getIntent();
-            intent = new Intent(this, MainNavDrawerActivity.class);
-            if(previousIntent.hasExtra("fragment")){
-                Log.d(TAG,"Intent fragment1: " + previousIntent.getStringExtra("fragment"));
-                intent.putExtra("fragment", previousIntent.getStringExtra("fragment"));
-            }else {
-                Log.d(TAG,"Intent fragment2: " + previousIntent.getStringExtra("fragment"));
-                intent.putExtra("fragment", "OwnProxiventsFragment");
-            }
-            startActivity(intent);
-        } else if(ParseUser.getCurrentUser() != null && !ParseUser.getCurrentUser().getBoolean("emailVerified")){
-            AlertDialog.Builder builder = new AlertDialog.Builder(this);
-            builder.setTitle("Email Address Verification Needed");
-            builder.setMessage("We have sent you an email at " + ParseUser.getCurrentUser().getString("email") + ". Please follow the verification instructions before you proceed.");
-            builder.setPositiveButton("Ok", new DialogInterface.OnClickListener() {
-                @Override
-                public void onClick(DialogInterface dialogInterface, int i) {
-                    ParseUser user = ParseUser.getCurrentUser();
-                    user.logOut();
-                    intent = new Intent(DispatchingActivity.this, WelcomeActivity.class);
-                    startActivity(intent);
+        if (ParseUser.getCurrentUser() != null){
+            if(ParseUser.getCurrentUser().getBoolean("emailVerified") || ParseUser.getCurrentUser().getBoolean("isFBUser")) {
+                // Associate Installation to userid
+                if (ParseUser.getCurrentUser().get("welcomeProxivent")==null) {
+                    createWelcomeProxivent();
                 }
-            });
-            AlertDialog dialog = builder.create();
-            dialog.show();
-        }else {
 
+                // Start an intent for the logged in activity
+                Intent previousIntent = getIntent();
+                intent = new Intent(this, MainNavDrawerActivity.class);
+                if(previousIntent.hasExtra("fragment")){
+                    Log.d(TAG, "Intent fragment1: " + previousIntent.getStringExtra("fragment"));
+                    intent.putExtra("fragment", previousIntent.getStringExtra("fragment"));
+                }else {
+                    Log.d(TAG,"Intent fragment2: " + previousIntent.getStringExtra("fragment"));
+                    intent.putExtra("fragment", "OwnProxiventsFragment");
+                }
+                startActivity(intent);
+
+            }else {
+                AlertDialog.Builder builder = new AlertDialog.Builder(this);
+                builder.setTitle("Email Address Verification Needed");
+                builder.setMessage("We have sent you an email at " + ParseUser.getCurrentUser().getString("email") + ". Please follow the verification instructions before you proceed.");
+                builder.setPositiveButton("Ok", new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialogInterface, int i) {
+                        ParseUser user = ParseUser.getCurrentUser();
+                        user.logOut();
+                        intent = new Intent(DispatchingActivity.this, WelcomeActivity.class);
+                        startActivity(intent);
+                    }
+                });
+                AlertDialog dialog = builder.create();
+                dialog.show();
+
+            }
+
+        }else {
             // Start and intent for the logged out activity
             intent = new Intent(this, WelcomeActivity.class);
             startActivity(intent);
         }
+
+
     }
 
     void createWelcomeProxivent(){
@@ -93,15 +99,21 @@ public class DispatchingActivity extends Activity {
         proxivent.put("major", 0);
         proxivent.put("minor", 0);
         proxivent.put("status", "inactive");
-        proxivent.saveInBackground(new SaveCallback() {
-            @Override
+        //proxivent.saveInBackground(new SaveCallback() {
+        proxivent.pinInBackground();
+        proxivent.saveEventually();
+        ParseUser user = ParseUser.getCurrentUser();
+        user.put("welcomeProxivent", proxivent);
+        user.saveInBackground();
+
+            /*@Override
             public void done(ParseException e) {
                 ParseUser user = ParseUser.getCurrentUser();
                 user.put("welcomeProxivent", proxivent);
                 user.saveInBackground();
 
             }
-        });
+        });*/
     }
 
     public void checkForBluetooth() {

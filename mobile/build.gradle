@@ -6,7 +6,7 @@ android {
 
     defaultConfig {
         applicationId "rp.soi.presence"
-        minSdkVersion 18
+        minSdkVersion 21
         targetSdkVersion 22
         versionCode 1
         versionName "1.0"
@@ -43,6 +43,13 @@ dependencies {
 }
 
 dependencies {
+    compile 'com.facebook.android:facebook-android-sdk:4.0.0'
+}
+
+dependencies {
+    compile 'com.firebase:firebase-client-android:2.5.2+'
+}
+/*dependencies {
     compile 'com.google.android.gms:play-services-ads:8.4.0'
 }
 dependencies {
@@ -50,7 +57,4 @@ dependencies {
 }
 dependencies {
     compile 'com.google.android.gms:play-services-gcm:8.4.0'
-}
-dependencies {
-    compile 'com.facebook.android:facebook-android-sdk:4.0.0'
-}
+}*/
